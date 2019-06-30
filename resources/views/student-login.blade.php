@@ -119,17 +119,15 @@
                     <span class="help-block hidden" id="error_pass">
                     </span>
                   </div>
-                  <div class="checkbox">
+                  {{--<div class="checkbox">
                     <label><span  style="margin-right:15px" ></span>Terms and Condition</label>
-                  </div>
+                  </div>--}}
               </form>
                 <button id="std-signup" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Sign Up</button>
             
             </div>
             <div class="modal-footer text-center">
-                <button class="btn btn-warning hidden" type="button" id="spin" data-toggle="modal" data-target="#helpme">
-                    Help
-                </button>
+
 
             </div>
           </div>
@@ -137,29 +135,10 @@
         </div>
       </div>
           
-    </div>                           
+
                                                  
         <!--  End form Register Post -->     
-  <div class="modal fade" id="helpme" role="dialog">
-      <div class="modal-dialog">
-      
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-            <h4 class="modal-title">Contact</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-              <p> 7905510609</p>
-              <p>contact@allexamcorner.org</p>
-              <p>sunny6142@gmail.com</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-      </div>  
-  </div>
+
 
     <!-- Bootstrap core JavaScript -->
     <script src="{{asset('landing/vendor/jquery/jquery.min.js')}}"></script>
@@ -299,7 +278,7 @@
                             $('#std-login').text(""); 
                             $('#std-login').append('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i> Redirecting ...');
                             window.location.replace("/home");
-                            $('#add_question_msg').text("Question Successfully Added");
+                            $('#add_question_msg').text("Student Successfully Added");
                          //   console.log("ABC");
                         }
                    }

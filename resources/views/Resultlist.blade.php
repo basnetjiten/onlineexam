@@ -132,32 +132,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="page-header-breadcrumb">
-                                        <ul class="breadcrumb-title">
 
-                                            <li class="breadcrumb-item">
-                                                <button id="filter_button" type="button"
-                                                        class="btn btn-info dropdown-toggle" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
-                                                    Fiter Result
-                                                </button>
-                                                <div class="dropdown-menu">
-
-                                                    <?php
-                                                    $array = json_decode(Auth::user()->category, true);
-                                                    foreach ($array as $item) {
-                                                        //   echo $item; echo '<br/>';
-                                                        echo '<a onclick="update_result_list(\'' . $item . '\')" class="dropdown-item" href="#">' . $item . '</a>';
-
-                                                    } ?>
-
-                                                </div>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
 
                                 <!-- Page-header end -->
 
@@ -173,15 +148,17 @@
                                         <!-- End Create New Exam -->
                                         <?php $no = 1; ?>
                                         @foreach ($result as $value)
+                                            @if($value->subject_passed==1)
                                             <div class="col-md-6 col-xl-3">
                                                 <div class="card widget-card-1">
                                                     <div class="card-block-small">
                                                         <i class="icofont icofont-pie-chart bg-c-blue card1-icon"></i>
-                                                        <span class="text-c-blue f-w-600">Exam Title</span>
-                                                        <h4>{{$value->examtitle}}</h4>
+                                                        <span class="text-c-blue f-w-600">{{$value->examtitle}}</span>
+                                                        <h4>{{$value->subject}}</h4>
                                                         <div>
                                                                         <span class="f-left m-t-12 d-flex text-muted">
-                                                                            <button onclick="showResult('{{$value->examcode}}','{{$value->examtitle}}','{{$value->tname}}','{{$value->category}}','{{$value->examtime}}','{{auth()->user()->allow_exam_review}}')"
+
+                                                                            <button onclick="showResult('{{$value->examcode}}','{{$value->examtitle}}','{{$value->tname}}','{{$value->category}}','{{$value->examtime}}','{{auth()->user()->allow_exam_review}}','{{$value->subject_id}}')"
                                                                                     class="show-modal btn btn-info btn-sm">
                                                                                 <i class="icofont icofont-eye-alt"></i> View Result
                                                                             </button>
@@ -190,6 +167,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
@@ -401,7 +379,7 @@
             $('.modal-title').text('Add Question');
         }
 
-        function viewdetil(name, student_id, admin_id, created_at, validity) {
+        function viewdetail(name, student_id, admin_id, created_at, validity) {
             //          console.log(d.fee);
             $('#show').modal('show');
             $('.modal-title').text('Student Detail');
@@ -431,7 +409,8 @@
             $('#delete_student_id').text(student_id);
         }
 
-        function detailResult($examcode) {
+        function detailResult($subject_id) {
+
             $('#resultprocessing').modal('hide');
             $('#Detail_modal').modal('show');
             $('.modal-title').text('Answer Sheet');
@@ -446,7 +425,7 @@
                     xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
                 },
                 data: {
-                    'examcode': $examcode
+                    'subject_id': $subject_id
                 },
 
                 success: function (data) {
@@ -454,19 +433,17 @@
                     var i = 0;
 
                     var encode = new Object();
-                    console.log(data.result)
+                    console.log(data.result);
                     console.log(data.question);
 
 
                     for (var val in data.result) {
                         encode[data.result[val].ques_id] = [data.result[val].selected_option, data.result[val].givenmarks];
                     }
-
-                    for (var val in data.question) {
+                    let no = 0;
+                    for (let val in data.question) {
                         i++;
                         console.log(data.question[val]);
-
-                        var no = 0;
 
                         // if(calculated_marks.hasOwnProperty(data.cat[n].subject)) {
                         no = +no + +1;
@@ -518,13 +495,14 @@
         }
 
         // Show Result
-        function showResult($examcode, $title, $tname, $cat, $time, $allow_review) {
+        function showResult($examcode, $title, $tname, $cat, $time, $allow_review,$subject_id) {
             //get
             $("#result_footer").text("");
+            //console.log($examcode);
 
             console.log($allow_review);
             if ($allow_review==1) {
-                $("#result_footer").append('<button type="button" class="btn btn-warning" onclick="detailResult(' + $examcode + ')">Detail</button>' +
+                $("#result_footer").append('<button type="button" class="btn btn-warning" onclick="detailResult(\'' + $subject_id + '\')">Detail</button>' +
                     '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 
 
@@ -549,7 +527,7 @@
                     xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
                 },
                 data: {
-                    'examcode': $examcode
+                    'subject_id': $subject_id
                 },
 
                 success: function (data) {
@@ -604,9 +582,12 @@
                     let $rank = 0;
                     for (let val in sorted_total_marks) {
                         $rank++;
-                        if (sorted_total_marks[val][0] == '{{Auth::user()->student_id}}') {
+                        if (sorted_total_marks[val][0] == '{{Auth::user()->student_id}}' ) {
                             let no = 0;
+
                             for (let n in data.exam_subject) {
+
+                                console.log("subject_id: " + data.exam_subject[n].subject_id);
                                 console.log("only sorted total marks: " + sorted_total_marks);
                                 console.log("student id (usually email): " + sorted_total_marks[val][0] + "subject name: " + data.exam_subject[n].subject);
                                 if (!calculated_marks.hasOwnProperty(sorted_total_marks[val][0] + data.exam_subject[n].subject)) {
@@ -664,8 +645,8 @@
 
                 success: function (data) {
                     $('#exam_list_up').text("");
-                    var i = 0;
-                    for (var k in data.exam) {
+                    let i = 0;
+                    for (let k in data.exam) {
                         if (data.exam.hasOwnProperty(k)) {
                             i++;
                             console.log(data.exam[k].category);
@@ -726,8 +707,8 @@
                 success: function (data) {
 
                     $('#exam_list_up').text("");
-                    var i = 0;
-                    for (var k in data.exam) {
+                    let i = 0;
+                    for (let k in data.exam) {
                         if (data.exam.hasOwnProperty(k)) {
                             i++;
                             console.log(data.exam[k].category);
@@ -755,7 +736,7 @@
                             '</div>');
                     }
 
-                    for (var val in data.exam) {
+                    for (let val in data.exam) {
                         //        console.log(val);
                     }
                     if ((data.errors)) {
@@ -778,7 +759,7 @@
                 $("#add_question_spin").removeClass('hidden');
                 $('#add_question_msg').text("Processing ...");
 
-                var data = new FormData();
+                let data = new FormData();
 
                 data.append('question', $('textarea[name=question]').val());
                 data.append('option_A', $('input[name=option_A]').val());

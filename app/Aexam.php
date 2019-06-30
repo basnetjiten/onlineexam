@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Aexam extends Model
 {
-    protected $primaryKey = 'examcode';
+    protected $primaryKey = 'id';
     protected $table = 'exam';
     
 }

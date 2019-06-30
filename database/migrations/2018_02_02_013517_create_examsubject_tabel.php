@@ -18,9 +18,14 @@ class CreateExamsubjectTabel extends Migration
                   $table->increments('subject_id');
                   $table->string('examcode');
                   $table->string('subject',100);
+                  $table->string('subject_level',100);
+                  $table->integer('pass_mark',100);
+                  $table->string('subject_type',10);
                   $table->string('admin_id',100);
                   $table->string('admin_email',100);
-                  $table->timestamps();
+            $table->foreign('examcode')->references('examcode')->on('exam')->onDelete('cascade');
+
+            $table->timestamps();
             
           });
     }

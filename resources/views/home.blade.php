@@ -102,53 +102,181 @@
 
                                         <!-- End Create New Exam -->
                                         <?php $no = 1; ?>
+
                                         @foreach ($exam as $value)
-                                            <div class="col-md-6 col-xl-3">
-                                                <div class="card widget-card-1">
-                                                    <div class="card-block-small">
-                                                        <i class="icofont icofont-pie-chart bg-c-blue card1-icon"></i>
-                                                        <span class="text-c-blue f-w-600">Exam Title</span>
-                                                        <h4>{{$value->examtitle}}</h4>
-                                                        @if($value->examattempt_count!=null)
-                                                            @if($value->examattempt_count==$value->examattempt)
-                                                                <div>
-                                                                <span class="f-left m-t-10 text-muted">
-                                                                            <a href="#"
-                                                                               class=" btn btn-info btn-danger btn-sm btn-disabled ">
-                                                                                <i class="icofont icofont-warning-alt"></i> Exam Limit Reached
-                                                                            </a>
 
-                                                                        </span>
 
-                                                                </div>
-                                                                @else
+                                            @if($value->subject_level=="level_one" && $value->subject_type=="h1" && $value->examtitle!=null)
+
+                                                <div class="col-md-6 col-xl-3">
+                                                    <div class="card widget-card-1">
+                                                        <div class="card-block-small">
+                                                            <i class="icofont icofont-pie-chart bg-c-blue card1-icon"></i>
+                                                            <span class="text-c-blue f-w-600">{{$value->examtitle}}</span>
+                                                            <h5>{{$value->subject}}</h5>
                                                                 <div>
 
                                                                 <span class="f-left m-t-10 text-muted">
-                                                                            <a href="/exam/start/{{$value->examcode}}/{{$value->examtitle}}/{{$value->tname}}/{{$value->category}}/{{$value->examtime}}"
+                                                                            <a href="/exam/start/{{$value->subject_id}}/{{$value->examtitle}}/{{$value->tname}}/{{$value->examtime}}/{{1}}/{{$value->examcode}}"
                                                                                class="show-modal btn btn-info btn-sm">
+
                                                                                 <i class="icofont icofont-eye-alt"></i> Start Exam
                                                                             </a>
                                                                         </span>
 
                                                                 </div>
-                                                            @endif
-                                                        @else
-                                                            <div>
 
-                                                                <span class="f-left m-t-10 text-muted">
-                                                                            <a href="/exam/start/{{$value->examcode}}/{{$value->examtitle}}/{{$value->tname}}/{{$value->category}}/{{$value->examtime}}"
-                                                                               class="show-modal btn btn-info btn-sm">
-                                                                                <i class="icofont icofont-eye-alt"></i> Start Exam
-                                                                            </a>
-                                                                        </span>
 
-                                                            </div>
-
-                                                        @endif
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- Page body end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Main-body end -->
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="pcoded-wrapper">
+
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+
+                <!-- Main-body start -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- Page-header start -->
+                        <div class="page-header card" style=" margin-top: 0px;">
+                            <div class="row align-items-end">
+                                <div class="col-lg-8">
+                                    <div class="page-header-title">
+                                        <i class="icofont icofont-file-code bg-c-blue"></i>
+                                        <div class="d-inline">
+                                            <h4>Passed Subject List</h4>
+                                            <span>Next Level</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="page-header-breadcrumb">
+                                        <ul class="breadcrumb-title">
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Page-header end -->
+
+                                <!-- Page body start -->
+
+                                <!-- Basic table card start -->
+                                <div class="container" style="padding:0px;">
+
+                                    <div class="card-block table-border-style" id="exam_list_up">
+
+                                        <!-- Create New Exam -->
+
+                                        <!-- End Create New Exam -->
+                                        <?php $no = 1; ?>
+                                        @foreach ($attemptedSubject as $value)
+
+                                                <div class="col-md-6 col-xl-3">
+                                                    <div class="card widget-card-1">
+                                                        <div class="card-block-small">
+                                                            <i class="icofont icofont-pie-chart bg-c-green card1-icon"></i>
+                                                            <span class="text-c-green f-w-600">{{$value->examtitle}}</span>
+                                                            <h4>{{$value->subject}}</h4>
+
+                                                                <div>
+
+                                                                <span class="f-left m-t-10 text-muted">
+                                                               <a href="/exam/start/{{$value->subject_id}}/{{$value->examtitle}}/{{$value->tname}}/{{$value->examtime}}/{{1}}/{{$value->examcode}}" class="show-modal btn btn-info btn-sm">
+                                                                                <i class="icofont icofont-eye-alt"></i> Start Exam
+                                                                            </a>
+                                                                        </span>
+
+                                                                </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -670,11 +798,15 @@
                                 '<div class="card widget-card-1">' +
                                 '<div class="card-block-small">' +
                                 '<i class="icofont icofont-pie-chart bg-c-blue card1-icon"></i>' +
-                                '<span class="text-c-blue f-w-600">Exam Title</span>' +
-                                '<h4>' + data.exam[k].examtitle + '</h4>' +
+                                '<span class="text-c-blue f-w-600">'+data.exam[k].examtitle+'</span>' +
+                                '<h5>' + data.exam[k].subject + '</h5>' +
                                 '<div>' +
                                 '<span class="f-left m-t-10 text-muted">' +
-                                '<a href="/exam/start/' + data.exam[k].examcode + '/' + data.exam[k].examtitle + '/' + data.exam[k].tname + '/' + data.exam[k].category + '/' + data.exam[k].examtime + '"  class="show-modal btn btn-info btn-sm" >' +
+
+
+
+
+                                '<a href="/exam/start/' + data.exam[k].subject_id + '/' + data.exam[k].examtitle + '/' + data.exam[k].tname + '/'+  data.exam[k].examtime + '/' + 1 + '/'  + data.exam[k].examcode + '"  class="show-modal btn btn-info btn-sm" >' +
                                 '<i class="icofont icofont-eye-alt"></i> Start Exam' +
                                 '</a>' +
                                 '</span>' +

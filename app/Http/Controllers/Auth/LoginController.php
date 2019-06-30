@@ -41,7 +41,7 @@ class LoginController extends Controller
      //   Config::set('database.connections.mysql.database', 'student') ;
         $this->validate($request,[
             'student_id' => 'required|string',
-            'password' => 'required|min:3|max:10'
+            'password' => 'required|min:6|max:10'
         ]);
 
      //   Auth::guard('web')->setConnection('student');
@@ -58,7 +58,7 @@ class LoginController extends Controller
     public function StudentLogin(Request $request){
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|string',
-            'password' => 'required|min:3|max:10'
+            'password' => 'required|min:6|max:10'
         ]);
 
         if($validator->fails()){

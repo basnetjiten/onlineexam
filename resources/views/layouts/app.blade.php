@@ -8,7 +8,20 @@
     <!-- CSRF Token -->
     <meta id="token" name="token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Online Exam') }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/square/yellow.css">
 
+
+    <style>
+
+        /* icheck checkboxes */
+
+        .iradio_flat-yellow {
+
+            background: url(https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/square/yellow.png) no-repeat;
+
+        }
+
+    </style>
 
     <!-- Favicon icon -->
 {{--<link rel="icon" href="{{asset('assets/images/favicon.ico')}}" type="image/x-icon">--}}
@@ -533,7 +546,7 @@
                                 </li>
                             </ul>
                             <ul class="nav-right">
-                                <li class="header-notification">
+                                {{--<li class="header-notification">
                                     <a href="#!">
                                         <i class="ti-bell"></i>
                                         <span class="badge bg-c-pink"></span>
@@ -574,7 +587,7 @@
                                         </div>
                                     </li>
                                 </ul> -->
-                                </li>
+                                </li>--}}
                                 <li class="user-profile header-notification">
                                     <a href="#!">
                                         <img src="{{ asset('assets/images/avatar-4.jpg')}}" class="img-radius"
@@ -598,11 +611,11 @@
                                                   <i class="ti-email"></i> My Messages
                                               </a>
                                           </li> -->
-                                        <li>
+                                        {{--<li>
                                             <a href="#">
                                                 <i class="ti-lock"></i> Lock Screen
                                             </a>
-                                        </li>
+                                        </li>--}}
                                         <li>
 
                                             <a href="/logout"
@@ -849,19 +862,19 @@
                 var i = 0;
 
                 var encode = new Object();
-                console.log(data.result)
+                console.log(data.result);
                 console.log(data.question);
 
 
                 for (var val in data.result) {
                     encode[data.result[val].ques_id] = [data.result[val].selected_option, data.result[val].givenmarks];
                 }
-
+                var no = 0;
                 for (var val in data.question) {
                     i++;
                     console.log(data.question[val]);
 
-                    var no = 0;
+
 
                     // if(cal_marks.hasOwnProperty(data.cat[n].subject)) {
                     no = +no + +1;
@@ -920,7 +933,7 @@
         //    alert($cat);
         //    alert($time);
         $("#result_footer").text("");
-        $("#result_footer").append('<button type="button" class="btn btn-warning" onclick="detailResult(' + $examcode + ')">Detail</button>' +
+        $("#result_footer").append('<button type="button" class="btn btn-warning" onclick="detailResult(\'' + $examcode + '\')">Detail</button>' +
             '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>');
 
 
@@ -961,7 +974,7 @@
                         if (cal_marks.hasOwnProperty(data.result[k].student_id + data.result[k].subject)) {
 
                             cal_marks[data.result[k].student_id + data.result[k].subject] = +cal_marks[data.result[k].student_id + data.result[k].subject] + +data.result[k].givenmarks;
-//                                    console.log(data.result[k].student_id, cal_marks[data.result[k].student_id+data.result[k].subject]); 
+//                                    console.log(data.result[k].student_id, cal_marks[data.result[k].student_id+data.result[k].subject]);
                         }
                         else {
                             cal_marks[data.result[k].student_id + data.result[k].subject] = data.result[k].givenmarks;
@@ -986,12 +999,13 @@
                 }
                 $('#result_table_headerrank').append("<th>Total</th>");
                 var $rank = 0;
+
                 for (var val in sorted_total_marks) {
                     $rank++;
                     if (1) {
-                        var no = 0;
-                        $('#result_active_process').append("<tr id='result_active_process" + $rank + "'><td>" + $rank + "</td><td>" + sorted_total_marks[val][0] + "</td></tr>");
 
+                        $('#result_active_process').append("<tr id='result_active_process" + $rank + "'><td>" + $rank + "</td><td>" + sorted_total_marks[val][0] + "</td></tr>");
+                        var no = 0;
                         for (var n in data.cat) {
                             if (!cal_marks.hasOwnProperty(sorted_total_marks[val][0] + data.cat[n].subject)) {
                                 cal_marks[sorted_total_marks[val][0] + data.cat[n].subject] = 0;
@@ -1010,7 +1024,7 @@
                         }
 
                         $('#result_active_process' + $rank).append("<th>" + sorted_total_marks[val][1] + "</th>")
-                        $('#result_active_process' + $rank).append('<button type="button" class="btn btn-warning" onclick="detailResult(' + $examcode + ',\'' + sorted_total_marks[val][0] + '\')">Detail</button>');
+                        $('#result_active_process' + $rank).append('<button type="button" class="btn btn-warning" onclick="detailResult(\''  + $examcode + '\',\'' + sorted_total_marks[val][0] + '\')">Detail</button>');
                     }
                 }
 
@@ -1088,7 +1102,7 @@
 
     }
 
-    //add_subject_to_db  
+    //add_subject_to_db
     $(document).ready(function () {
         $("#add_subject_to_db").click(function () {
             $("#add_subject_to_db").addClass('hidden');
@@ -1107,6 +1121,9 @@
                 },
                 data: {
                     'subject': $('input[name=subject]').val(),
+                    'subject_level': $('input[name=subject_level]').val(),
+                    'subject_type': $('input[name=subject_type]').val(),
+                    'pass_mark': $('input[name=pass_mark]').val(),
                     'examcode': $('input[name=examcode]').val(),
                     'admin_id': $('input[name=admin_id]').val(),
                     'admin_email': $('input[name=admin_email]').val(),
@@ -1131,7 +1148,7 @@
                         }
 
                     } else {
-                        $('.dropdown-subject').append('<a class="dropdown-item" onclick="set_current_subject(\'' + data.subject + '\',' + data.id + ')" href="#">' + data.subject + '</a>');
+                        $('.dropdown-subject').append('<a class="dropdown-item" onclick="set_current_subject(\'' + data.subject + '\',' + data.subject_id + ')" href="#">' + data.subject + '</a>');
                         $('#add_subject_msg').text("Subject Successfully Added");
                         $('#subject').val('');
                     }
@@ -1257,6 +1274,27 @@
     }
 
 
+    function editExam($exam_id,$examcode,$examtitle,$publish,$tname,$examtime,$category,$random,$examtime,$examattempt,$admin_id,$admin_email){
+
+        $('#update_exam').modal('show');
+        $('.modal-title').val('Update Exam');
+        console.log($examcode);
+        $('#tname').val($tname);
+        $('#examtitle').val($examtitle);
+        $('#examtime').val($examtime);
+        $('#category').val($category);
+        $('#examattempt').val($examattempt);
+        $('#examcode').val($examcode);
+        $('#admin_id').val($admin_id);
+        $('#admin_email').val($admin_email);
+
+
+    }
+
+
+
+
+
     function EditQuestion($no, $id, $question, $A, $B, $C, $D, $m, $nm, $co, $l, $image, $ima, $imb, $imc, $imd) {
 
         $('#MathPreview').text("");
@@ -1336,7 +1374,7 @@
         $("#updatequestion").removeClass('hidden');
     }
 
-    function viewdetil(name, student_id, admin_id, created_at, validity) {
+    function viewdetail(name, student_id, admin_id, created_at, validity) {
         //          console.log(d.fee);
         $('#show').modal('show');
         $('.modal-title').text('Student Detail');
@@ -1344,8 +1382,11 @@
         $('#view_student_id').text(student_id);
         $('#view_institution_id').text(admin_id);
         $('#view_created_at').text(created_at);
-        $('#view_validity').text(validity);
+
     }
+
+
+
 
     function Editdetail(id, name, student_id) {
         //        console.log(d.fee);
@@ -1367,24 +1408,32 @@
     }
 
     //allow user to review the exam or not
-    function Exam_reviewer(id) {
-console.log(id);
-        $.ajax({
-            type: 'POST',
-            url: '/examreview',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
-            },
-            data: {
-                'id':id
-            },
-
-            success: function (data) {
-            }
+    $(document).ready(function () {
+        $('.published').iCheck({
+            checkboxClass: 'icheckbox_square-yellow',
+            radioClass: 'iradio_square-yellow',
+            increaseArea: '20%'
         });
+        $('.published').on('ifClicked', function (event) {
+            id = $(this).data('id');
+            $.ajax({
+                type: 'POST',
+                url: '/examreview',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                },
+                data: {
+                    'id':id
+                },
 
-
-    }
+                success: function (data) {
+                }
+            });
+        });
+        $('.published').on('ifToggled', function (event) {
+            $(this).closest('tr').toggleClass('success');
+        });
+    });
 
 
     // Add Student
@@ -1411,7 +1460,7 @@ console.log(id);
                     'name': $('input[name=name]').val(),
                     'admin_id': $('input[name=admin_id]').val(),
                     'admin_email': $('input[name=admin_email]').val(),
-                    'fee': $('select[name=fee]').val(),
+                  'fee': $('select[name=fee]').val(),
                     'contact': $('input[name=contact]').val(),
                     'category': JSON.stringify(selectednumbers),
                     'password': $('input[name=password]').val(),
@@ -1830,6 +1879,11 @@ console.log(id);
     }
 </script>
 
+
+
+
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#addexam").click(function () {
@@ -1900,6 +1954,10 @@ console.log(id);
         });
     });
 </script>
+
+
+
+
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
@@ -1995,7 +2053,8 @@ console.log(id);
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-
+<!-- icheck checkboxes -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
 <!-- (Optional) Latest compiled and minified JavaScript translation files -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">

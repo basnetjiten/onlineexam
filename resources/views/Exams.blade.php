@@ -82,10 +82,18 @@
                                                                     <a href="addquestion/examcode/{{$value->examcode}}/{{$value->examtitle}}/{{$value->tname}}/{{$value->category}}/{{$value->examtime}}" class="show-modal btn btn-info btn-sm" >
                                                                         <i class="icofont icofont-eye-alt"></i>
                                                                         </a>
-                                                                        <a  href="#" class="edit-modal btn btn-warning btn-sm" >
-                                                                            <i class="glyphicon glyphicon-pencil"></i>
+                                                                        <a  href="#" onclick="editExam('{{ $value->id }}','{{ $value->examcode }}','{{ $value->tname }}','{{ $value->examtitle }}','{{ $value->examtime }}','{{ $value->examattempt }}','{{ $value->category }}','{{ $value->admin_id }}','{{ $value->admin_email }}')"
+                                                                            class="edit-modal btn btn-warning btn-sm"
+
+                                                                            data-id="{{ $value->id }}" data-examcode="{{ $value->examcode }}"
+                                                                            data-examtitle="{{ $value->examtitle }}" data-examtime="{{ $value->examtime }}"
+                                                                            data-examattempt="{{ $value->examattempt }}" data-category="{{ $value->category }}"
+                                                                            data-admin_id="{{ $value->admin_id }}" data-admin_email="{{ $value->admin_email }}"
+                                                                            data-tname="{{ $value->tname }}">
+
+                                                                            <i  class="glyphicon glyphicon-pencil"></i>
                                                                         </a>
-                                                                        <a  href="#" class="detete-modal btn btn-danger btn-sm">
+                                                                        <a  href="{{route('trash-exam',['examcode'=>$value->id])}}" class="detete-modal btn btn-danger btn-sm">
                                                                             <i class="glyphicon glyphicon-trash"></i>
                                                                         </a>
                                                                     </span>
@@ -126,6 +134,7 @@
                                                                 <p class="tname_error text-center alert alert-danger hidden"></p>
                                                             </div>
                                                         </div>
+
                                                         
                                                         <div class="form-group">
                                                             <label class="control-label col-sm-4" for="examtitle">Exam Title :</label>
@@ -184,8 +193,105 @@
                                             </div>
                                         </div>
                                     </div>
-                            <!--  End form Create New Exam -->                              
-                            <!--  Show Post -->
+                            <!--  End form Create New Exam -->
+
+
+
+
+
+
+
+
+
+  <!--  form Edit  Exam -->
+  <div id="update_exam" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"></h4>
+                  <h5 id="create_exam_error_msg" class="text-success"></h5>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal" role="form">
+                      <div class="form-group row add">
+                          <label class="control-label col-sm-4" for="tname">Teacher Name :</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" id="tname" name="tname" placeholder="Enter Teacher Full Name" required>
+                              <p class="tname_error text-center alert alert-danger hidden"></p>
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                          <label class="control-label col-sm-4" for="examtitle">Exam Title :</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" id="examtitle" name="examtitle" placeholder="Create New Exam Title 'ex- GS 1' " required>
+                              <p class="examtitle_error text-center alert alert-danger hidden"></p>
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                          <label class="control-label col-sm-4" for="examtime">Exam Time (min) :</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" id="examtime" name="examtime" placeholder="Enter Exam time (min)" required>
+                              <p class="examtime_error text-center alert alert-danger hidden"></p>
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                          <label class="control-label col-sm-4" for="examattempt">Number of Attempts:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" id="examattempt" name="examattempt" placeholder="Enter Exam Attempts" required>
+                              <p class="examtime_error text-center alert alert-danger hidden"></p>
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                          <label class="control-label col-sm-4" for="category">Select Category :</label>
+                          <div class="col-sm-8">
+                              <select class="form-control" name="category" id="category" style="height: unset;" required>
+                                  @foreach ($category as $cat)
+                                      <option value='{{$cat->category}}'>{{ $cat->category }}</option>
+                                  @endforeach
+
+                              </select>
+                          </div>
+                      </div>
+
+                      <input type="hidden" disabled class="form-control" id="examcode" name="examcode" placeholder="examcode" required>
+                      <input type="hidden" disabled class="form-control" id="admin_id" name="admin_id" value=" {{ Auth::user()->id }}" placeholder="institution Id" required>
+
+                      <input type="hidden" disabled  class="form-control" id="admin_email" name="admin_email" value=" {{ Auth::user()->email }}" placeholder="Institution Email" required>
+
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-warning" type="submit" id="updatexam">
+                      <span class="glyphicon glyphicon-plus"></span>Update Exam
+                  </button>
+                  <button class="btn btn-warning hidden" type="button" id="aespin">
+                      <i class="fa fa-spinner fa-spin" ></i> pls Wait...
+                  </button>
+                  <button class="btn btn-warning" type="button" data-dismiss="modal">
+                      <span class="glyphicon glyphicon-remobe"></span>Close
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--  End form Create New Exam -->
+
+
+
+
+
+
+
+
+
+
+
+  <!--  Show Post -->
                                 <div id="show" class="modal fade" role="dialog">
                                       <div class="modal-dialog" >
                                             <div class="modal-content">

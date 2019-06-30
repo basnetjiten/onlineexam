@@ -12,7 +12,7 @@
     right: -15px;
 }
 .chosenContainer .form-control {
-    height: inherit; 
+    height: inherit;
     padding: 0px;
 }
 </style>
@@ -59,9 +59,9 @@
     </div>
     <!-- Pre-loader end -->
 
-   
+
                 <div class="pcoded-wrapper">
-                    
+
                     <div class="pcoded-content">
                         <div class="pcoded-inner-content">
 
@@ -95,14 +95,14 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                        
+
                                     <!-- Page-header end -->
 
                                     <!-- Page body start -->
-                                    
+
                                     <!-- Basic table card start -->
                                     <div class="container">
-                                        
+
                                         <div class="card-block table-border-style">
                                             <div class="table-responsive">
                                                 <table class="table" id="table">
@@ -131,7 +131,7 @@
                                                             <td class="text-success">{{ $value->created_at }} </td>
                                                             <td class="text-danger">{{ $value->validity }} </td>
                                                             <td>
-                                                            
+
                                                                 <a onclick="viewdetil( '{{ $value->name }}','{{ $value->student_id }}', '{{Auth::user()->id}}','{{ $value->created_at }}','{{ $value->validity }}' )" href="#" class="show-modal btn btn-info btn-sm" data-id="{{ $value->id }}" data-name="{{ $value->name }}" data-student_id ="{{ $value->student_id }}">
                                                                 <i class="icofont icofont-eye-alt"></i>
                                                                 </a>
@@ -149,18 +149,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Page body end -->
                                     </div>
                                     </div>
                                  </div>
                              </div>
                              <!-- Main-body end -->
-                                   
+
                         </div>
                     </div>
                 </div>
-                                                  
+
                             <!--  form Create Post -->
                             <div id="create" class="modal fade" role="dialog">
                                       <div class="modal-dialog" >
@@ -186,9 +186,9 @@
                                                                 <p class="student_id_error text-center alert alert-danger hidden"></p>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <input type="hidden" disabled class="form-control" id="admin_id" name="admin_id" value=" {{ Auth::user()->id }}" placeholder="institution Id" required>
-                                                             
+
                                                         <div class="form-group">
                                                             <label class="control-label col-sm-4" for="student_fee">Fee :</label>
                                                             <div class="col-sm-8">
@@ -200,7 +200,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                       
+
                                                         <div class="form-group">
                                                             <label class="control-label col-sm-4" for="contact">Contact No. :</label>
                                                             <div class="col-sm-8">
@@ -208,7 +208,7 @@
                                                                 <p class="student_id_error text-center alert alert-danger hidden"></p>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <form id="chosenForm" class="form-horizontal">
     <div class="form-group">
         <label class="col-xs-3 control-label">Favorite color</label>
@@ -233,7 +233,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label col-sm-4" for="category">Select Category:</label>
                                                             <div class="col-sm-8">
-                                                            
+
                                                             <select class="form-control chosen-select" name="colors" multiple data-placeholder="Choose 2-4 colors" style="width: 100%;">
                                                                 <option value="black">Black</option>
                                                                 <option value="blue">Blue</option>
@@ -252,9 +252,9 @@
                                                                     <input id="password" type="password" class="form-control" name="password" required>
                                                                     <p class="pass_error text-center alert alert-danger hidden"></p>
                                                                 </div>
-                                                            
+
                                                         </div>
-                                                        
+
 
                                                         <div class="form-group">
                                                             <label for="password_confirmation" class="control-label col-sm-4">Confirm Password</label>
@@ -265,7 +265,7 @@
                                                             </div>
                                                         </div>
                                                         <input type="hidden" disabled  class="form-control" id="admin_email" name="admin_email" value=" {{ Auth::user()->email }}" placeholder="Institution Email" required>
-                                                        
+
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">
@@ -282,7 +282,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            <!--  End form Create Post -->                              
+                            <!--  End form Create Post -->
                             <!--  Show Post -->
                                 <div id="show" class="modal fade" role="dialog">
                                       <div class="modal-dialog">
@@ -300,7 +300,7 @@
                                                     <p class="text-danger">Expired At : <span id = "view_validity"></span></p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                 
+
                                                     <button class="btn btn-warning hidden" type="button" id="spin">
                                                     <i class="fa fa-spinner fa-spin" ></i> pls Wait...
                                                     </button>
@@ -311,7 +311,7 @@
                                             </div>
                                         </div>
                                     </div>
-                             <!--  End Show Post -->  
+                             <!--  End Show Post -->
 
 
                                     <!--  Delete Post -->
@@ -329,7 +329,7 @@
                                                     <p class="text-primary">Name : <span id = "delete_name"></span> </p>
                                                     <p class="text-primary">Student Id :<span id = "delete_student_id"></span>  </p>
                                                     <div class="modal-footer">
-                                                    
+
                                                     <button class="btn btn-danger" type="submit" id="delete">
                                                        <i class="glyphicon glyphicon-trash"></i> Delete
                                                     </button>
@@ -344,7 +344,7 @@
                                             </div>
                                         </div>
                                     </div>
-                             <!--  End Delete Post -->  
+                             <!--  End Delete Post -->
                         <!--  form Edit Post -->
                             <div id="edit" class="modal fade" role="dialog">
                                       <div class="modal-dialog">
@@ -364,7 +364,7 @@
                                                             </div>
                                                         </div>
                                                         <input type="hidden" disabled class="form-control" id="uid" name="uid" placeholder="Field Id" required>
-                                                               
+
                                                         <div class="form-group">
                                                             <label class="control-label col-sm-4" for="student_id">Student Id :</label>
                                                             <div class="col-sm-8">
@@ -372,16 +372,16 @@
                                                                 <p class="student_id_error text-center alert alert-danger hidden"></p>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="form-group">
                                                             <label for="password" class="control-label col-sm-4">Create new Password</label>
                                                                 <div class="col-sm-8">
                                                                     <input id="upassword" type="password" class="form-control" name="upassword" required>
                                                                     <p class="upass_error text-center alert alert-danger hidden"></p>
                                                                 </div>
-                                                            
+
                                                         </div>
-                                                        
+
 
                                                         <div class="form-group">
                                                             <label for="password_confirmation" class="control-label col-sm-4">Confirm Password</label>
@@ -391,7 +391,7 @@
                                                                 <p class="uerror text-center alert alert-danger hidden"></p>
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">
@@ -408,7 +408,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            <!--  End form edit Post -->  
+                            <!--  End form edit Post -->
 
 @endsection
 

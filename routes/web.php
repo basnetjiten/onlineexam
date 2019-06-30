@@ -3,6 +3,7 @@
 
 //use Auth;
 
+use App\category;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -32,9 +33,11 @@ Route::put('test',function(){
 Route::delete('test',function(){
     echo 'GET';
 });
-
+//redirects to home view
     Route::get('/', function () {
-        return view('welcome');
+        $category = Category::all();
+      //  $admin_id = Auth::user()->admin_id;
+        return view('welcome',compact('category','admin_id'));
     });
 
 
@@ -54,10 +57,13 @@ Route::delete('test',function(){
     Route::post('/getsingleresult', 'HomeController@Get_Single_Result');
     Route::post('/updateexamlist', 'HomeController@Updateexamlist');
     Route::post('/updateresultlist', 'HomeController@Updateresultlist');
+    Route::post('/chespassorfaillevel', 'HomeController@FetchNextLevelQuestionBasedOnThisRequest');
     Route::post('/ajaxupdateexamcount', 'HomeController@updateExamCount');
+    Route::post('/nextlevelsubject', 'HomeController@nextLevelSubject');
     Route::post('/adduserreponse', 'HomeController@Adduserresponse');
+    Route::post('/updatesubjectlevel', 'HomeController@UpdateSubjectLevel');
     Route::post('/refresult', 'HomeController@AttemptNewExam');
-    Route::get('/exam/start/{id}/{title}/{tname}/{cat}/{time}', 'HomeController@startexam');
+    Route::get('/exam/start/{subject_id}/{title}/{tname}/{time}/{first_time}/{examcode}', 'HomeController@startexam');
 
     Route::post('/ajaxstudentsignup', 'Auth\StudentRegController@Student_SignUp');
     Route::post('/ajaxstudentlogin', 'Auth\LoginController@StudentLogin');
@@ -68,6 +74,7 @@ Route::delete('test',function(){
     Route::get('/addstudent', 'AdminController@Addstudent')->name('addstudent');
     Route::get('/liststudent', 'AdminController@showstudent')->name('studentlist');
     Route::post('/addquestion', 'AdminController@Addquestion');
+    Route::get('/deleteexam/{examcode}', 'AdminController@DeleteExam')->name('trash-exam');
     Route::post('/examreview', 'AdminController@ExamReview');
     Route::post('/updatequestion', 'AdminController@updatequestion');
     Route::post('/QuestionRandom', 'AdminController@QuestionRandom');
@@ -80,6 +87,7 @@ Route::delete('test',function(){
 
     Route::post('/Addquestiontodb', 'AdminController@Addsubject');
     Route::post('/addexam', 'Addexam@Add_Exam');
+    Route::post('/updateexam', 'Addexam@Update_Exam');
     Route::post('/ChangePassword', 'StudentController@ChangePassword');
     Route::post('/RemoveStudent', 'StudentDelete@Delete');
     Route::post('/RemoveQuestion','AdminController@DeleteQuestion');

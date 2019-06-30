@@ -35,6 +35,8 @@ class CreateExamQuestionTable extends Migration
             $table->TEXT('level');
             $table->TEXT('solution',10000)->nullable();
             $table->rememberToken();
+            $table->foreign('examcode')->references('examcode')->on('exam')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

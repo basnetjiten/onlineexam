@@ -330,7 +330,7 @@
                                                             </div>
                                                         </div>
                                                         <input type="hidden" disabled class="form-control" id="id_for_question_update" name="id_for_question_update" value="" placeholder="id_for_question_update" required>
-                                                        <input type="hidden" disabled class="form-control" id="examcode" name="examcode" value=" {{ $id }}" placeholder="examcode" required>
+                                                        <input type="hidden" disabled class="form-control" id="examcode" name="examcode" value=" {{ $examcode }}" placeholder="examcode" required>
                                                         <input type="hidden" disabled class="form-control" id="category" name="category" value=" {{ $cat }}" placeholder="category" required>
                                                        
                                                         <input type="hidden" disabled class="form-control" id="admin_id" name="admin_id" value=" {{ Auth::user()->id }}" placeholder="institution Id" required>
@@ -567,6 +567,12 @@
                                                             <label class="control-label col-sm-4" for="subject">Subject :</label>
                                                             <div class="col-sm-8">
                                                                 <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter Subject" required>
+                                                                <br>
+                                                                <input type="text" class="form-control" id="subject_level" name="subject_level" placeholder="Subject Level" required>
+                                                                <br>
+                                                                <input type="text" class="form-control" id="subject_type" name="subject_type" placeholder="Subject Type" required>
+                                                                <br>
+                                                                <input type="text" class="form-control" id="pass_mark" name="pass_mark" placeholder="Pass Mark" required>
                                                                 <p class="subject_error text-center alert alert-danger hidden"></p>
                                                             </div>
                                                         </div>
