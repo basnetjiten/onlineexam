@@ -298,6 +298,7 @@ class HomeController extends Controller
             $examAttempt = ExamAttempt::create(array('student_id' => $studentid, 'examcode' => $examcode,'subject_level'=>$subjectLevel,'subject_id'=>$subjectid,'subject_passed'=>$subjectPassed, 'examattempt_count' => 1));
         } else {
             $examAttempt->examattempt_count = $examAttempt->examattempt_count + 1;
+            $examAttempt->subject_passed = $subjectPassed;
             $examAttempt->save();
 
         }

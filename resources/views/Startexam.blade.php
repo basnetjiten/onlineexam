@@ -791,6 +791,26 @@
 
             console.log($passMark);
 
+
+           /* $.ajax({
+                type: "POST",
+                url: '/ajaxupdateexamcount',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                },
+                data: {
+                    'student_id': $studentId,
+                    'examcode': $examCode,
+                    'subjectLevel': $subjectLevel,
+                    'subject_id': $subjectId,
+                    'ispassed': 0,
+
+                },
+                success: function (result) {
+                    console.log($questionId);
+                }
+            });*/
+
             $.ajax({
                 type: "POST",
                 url: '/chespassorfaillevel',
@@ -860,25 +880,6 @@
                         subtitle.innerHTML = 'You can now try next Level.';
                         console.log($subjectType);
 
-                        /*  $("#examover").removeClass('hidden');
-                          $("#show_exam").addClass('hidden');*/
-
-                        //next ajax call that updates exam_question with next_level tag
-                        /* $.ajax({
-                             type: "POST",
-                             url: '/updatesubjectlevel',
-                             beforeSend: function (xhr) {
-                                 xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
-                             },
-                             data: {
-
-                                 subject_type: $subjectType,
-                                 subject_id: $subjectId,
-                             },
-                             success: function (data) {
-                                 //   console.log("success");
-                             }
-                         });*/
                         $.ajax({
                             type: "POST",
                             url: '/nextlevelsubject',
@@ -896,34 +897,57 @@
                                 console.log($examCode);
                             }
                         });
+
+                        $.ajax({
+                            type: "POST",
+                            url: '/ajaxupdateexamcount',
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                            },
+                            data: {
+                                'student_id': $studentId,
+                                'examcode': $examCode,
+                                'subjectLevel': $subjectLevel,
+                                'subject_id': $subjectId,
+                                'subject_passed': 1,
+
+                            },
+                            success: function (result) {
+                                console.log($questionId);
+                            }
+                        });
+
+
+
                     }
                     else{
                         $("#examover").removeClass('hidden');
                         $("#show_exam").addClass('hidden');
+
+                        $.ajax({
+                            type: "POST",
+                            url: '/ajaxupdateexamcount',
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                            },
+                            data: {
+                                'student_id': $studentId,
+                                'examcode': $examCode,
+                                'subjectLevel': $subjectLevel,
+                                'subject_id': $subjectId,
+                                'subject_passed': 0,
+
+                            },
+                            success: function (result) {
+                                console.log($questionId);
+                            }
+                        });
                     }
                 }
             });
 
-            // examcode = $(this).data('examcode');
-            console.log($subjectLevel);
-            $.ajax({
-                type: "POST",
-                url: '/ajaxupdateexamcount',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
-                },
-                data: {
-                    'student_id': $studentId,
-                    'examcode': $examCode,
-                    'subjectLevel': $subjectLevel,
-                    'subject_id': $subjectId,
-                    'subject_passed': 1,
 
-                },
-                success: function (result) {
-                    console.log($questionId);
-                }
-            });
+
 
 
 

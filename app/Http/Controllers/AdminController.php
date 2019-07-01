@@ -75,7 +75,7 @@ class AdminController extends Controller
 
         $validator = Validator::make($req->all(), [
             'name' => 'required',
-            'student_id' => 'numeric|required|unique:users|min:4|max:12',
+            'student_id' => 'numeric|required|unique:users|min:4',
             'admin_id' => 'required',
             'password' => 'required|min:3|max:10|confirmed',
             'admin_email' => 'required',
