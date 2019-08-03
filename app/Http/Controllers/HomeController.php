@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Aexam;
 use App\ExamAttempt;
 use App\nextLevelSubject;
+use App\StudentAbility;
 use PDF;
 use Illuminate\Http\Request;
 use Auth;
@@ -24,6 +25,8 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+
+$subquest = null;
 
 class HomeController extends Controller
 {
@@ -67,22 +70,17 @@ class HomeController extends Controller
 
         $exam = DB::table('exam_subject')
             ->leftJoin('exam', 'exam.examcode', '=', 'exam_subject.examcode')
-            ->select( 'exam.*', 'exam_subject.*')
+            ->select('exam.*', 'exam_subject.*')
             ->where('exam_subject.admin_id', '=', Auth::user()->admin_id)
             ->get();
-
-
 
 
         $attemptedSubject = DB::table('next_level_subject')
             ->Join('exam_subject', 'exam_subject.id', '=', 'next_level_subject.subject_id')
             ->Join('exam', 'exam.examcode', '=', 'next_level_subject.examcode')
-            ->select('exam_subject.*','exam.*')
+            ->select('exam_subject.*', 'exam.*')
             ->where('next_level_subject.student_id', '=', Auth::user()->student_id)
             ->get();
-
-
-
 
 
         /* $exam = DB::table('exam')
@@ -107,10 +105,10 @@ class HomeController extends Controller
         $result = DB::table('exam_attempts')
             ->Join('exam', 'exam.examcode', '=', 'exam_attempts.examcode')
             ->Join('exam_subject', 'exam_subject.subject_id', '=', 'exam_attempts.subject_id')
-            ->select('exam.*','exam_subject.*','exam_attempts.*')
+            ->select('exam.*', 'exam_subject.*', 'exam_attempts.*')
             ->where('exam_attempts.student_id', '=', Auth::user()->student_id)
             ->get();
-       // dd($result);
+        // dd($result);
 
 
         return view('Resultlist', compact('result'));
@@ -174,11 +172,11 @@ class HomeController extends Controller
             'category' => $req->val
         ];
 
-      //  $exam = DB::table('exam')->where($data)->get();
+        //  $exam = DB::table('exam')->where($data)->get();
         $exam = DB::table('exam_subject')
-            ->join('exam','exam.examcode','=','exam_subject.examcode')
-            ->select('exam_subject.*','exam.*')
-            ->where(['exam.admin_id'=>Auth::user()->admin_id, 'exam.publish' => 'Publish', 'category' => $req->val,'exam_subject.subject_level'=>'level_one'])
+            ->join('exam', 'exam.examcode', '=', 'exam_subject.examcode')
+            ->select('exam_subject.*', 'exam.*')
+            ->where(['exam.admin_id' => Auth::user()->admin_id, 'exam.publish' => 'Publish', 'category' => $req->val, 'exam_subject.subject_level' => 'level_one'])
             ->get();
         //    dump($exam);
         //    return response()->json($exam);
@@ -199,7 +197,28 @@ class HomeController extends Controller
             ['selected_option' => $req->selected_option, 'givenmarks' => $req->givenmarks]
         );
 
-        return response()->json($result);
+        // $exammark =Addquestion::where('$result',$result->ques_id)->get()
+
+        /* $isCorrect = DB::table('result')
+             ->join('exam_question','exam_question.id','=','result.ques_id')
+             ->select('exam_question.marks')
+             ->where(['result.student_id'=>Auth::user()->student_id]);*/
+        //dd($result->ques_id);
+
+        if ($result->givenmarks > 0) {
+
+            $nextDifficultQuestion = DB::table('exam_question')
+                ->select('exam_question.*')->where('exam_question.marks', $result->givenmarks + (2 / $result->count()))->get();
+            // dd($nextDifficultQuestion);
+            return response()->json(array($result, $nextDifficultQuestion));
+        } else {
+            $nextEasyQuestion = DB::table('exam_question')
+                ->select('exam_question.*')->where('exam_question.marks', $result->givenmarks - (2 / $result->count()))->get();
+            // dd($nextDifficultQuestion);
+            return response()->json(array($result, $nextEasyQuestion));
+        }
+
+
     }
 
     public function AttemptNewExam(Request $req)
@@ -207,7 +226,7 @@ class HomeController extends Controller
         //  $ref_result = new ref_result;
 
         $ref_result = ref_result::updateOrCreate(
-            ['student_id' => Auth::user()->student_id, 'subject_id' => $req->subject_id,'examcode'=>$req->examcode]
+            ['student_id' => Auth::user()->student_id, 'subject_id' => $req->subject_id, 'examcode' => $req->examcode]
         );
         //    $ref_result->student_id = Auth::user()->student_id;
         //    $ref_result->examcode = $req->examcode;
@@ -215,7 +234,8 @@ class HomeController extends Controller
         return response()->json($ref_result);
     }
 
-    public function startexam($id, $title, $tname, $time, $first_time,$examcode)
+    //getting individual subject and question to be attempted by student
+    public function startexam($id, $title, $tname, $time, $first_time, $examcode)
     {
 
         $data = [
@@ -227,27 +247,75 @@ class HomeController extends Controller
             'subject_code' => $id
         ];
 
+
+        //sum the total difficulty level of the particular subject's question
+
         //pass only the subject id
-        $subjectId = examsubject::where('subject_id',$id)->pluck('id')->first();
+        $subjectId = examsubject::where('subject_id', $id)->pluck('id')->first();
         //also pass only the exam id
-        $examId = Aexam::where('examcode',$examcode)->pluck('id')->first();
-
-        $subjectquestion= DB::table('exam_subject')
-            ->join('exam_question','exam_question.subject_code','=','exam_subject.subject_id')
-            ->select('exam_subject.*','exam_question.*')
-            ->where(['exam_question.examcode' => $examcode,'exam_subject.subject_id'=>$id])
-            ->get();
+        $examId = Aexam::where('examcode', $examcode)->pluck('id')->first();
 
 
-
-        //$subject = DB::table('exam_subject')->where($data)->get();
-       // $question = DB::table('exam_question')->where($data1)->get();
-        //dd($question);
         $userId = Auth::user()->student_id;
-        //    $question = response()->json(array('question' => $exam));
+
+        //get question count for particular question
+        $qCount = DB::table('exam_question')
+            ->where('subject_code', '=', $id)
+            ->count();
+        $sumQuestionDiff = DB::table('exam_question')->where('subject_code', '=', $id)->sum('qdifficulty');
+
+        $qmean = $qCount / $sumQuestionDiff;
+
+        $ACCURACY = 0.7;
+        //starting ability is between 90 - 95
+
+        // random numbers
+        $random = (float)rand() / (float)getrandmax();
+
+        $ABILITY = $qmean - (0.5 + 0.5 * $random);
+       // dd($ABILITY);
+
+        $ABILITYRIGHT = $ABILITY + 1;
+        $SE = $ACCURACY;
+
+        $student = StudentAbility::where(['student_id' => Auth::user()->student_id])->first();
+        if ($student != null) {
+            $student->pability = $ABILITY;
+            $student->subject_id = $id;
+            $student->abilityright = $ABILITYRIGHT;
+            $student->se = $SE;
+            $student->save();
+
+        }
 
 
-        return view('Startexam', compact('id','examcode','subjectquestion' ,'time', 'subjectId', 'examId','userId', 'first_time'));
+        $subjectquestion = DB::table('exam_subject')
+            ->join('exam_question', 'exam_question.subject_code', '=', 'exam_subject.subject_id')
+            ->select('exam_subject.*', 'exam_question.*')
+            ->where(['exam_question.examcode' => $examcode, 'exam_subject.subject_id' => $id])
+            ->get();
+       /* $halfability = (($student->pability + $student->abilityright) * 0.5);
+        $subjectquestion = null;*/
+       /* foreach($subquest as $value) {
+            $qhold = ABS($value->qdifficulty * 0.1 - $halfability);
+            // dd("qdiff".$value->qdifficulty * 0.1 .">=".$student->pability."qdiff".$value->qdifficulty * 0.1."<=".$student->abilityright);
+            if (($value->qdifficulty * 0.1 >= $student->pability) && ($value->qdifficulty * 0.1 <= $student->abilityright)) {
+                $subjectquestion = $value;
+
+            } else if (ABS($value->qdifficulty * 0.1 - $halfability) < $qhold) {
+
+                $subjectquestion = $value;
+            } else {
+                $subjectquestion = $value;
+            }
+        }*/
+
+
+     // dd($subjectquestion);
+
+
+
+        return view('Startexam', compact('id', 'examcode', 'subjectquestion', 'time', 'subjectId', 'examId', 'userId', 'first_time', 'student', 'halfability'));
     }
 
 
@@ -290,12 +358,12 @@ class HomeController extends Controller
         $studentid = Input::get('student_id');
         $subjectid = Input::get('subject_id');
         $subjectPassed = Input::get('subject_passed');
-        $subjectLevel= Input::get('subjectLevel');
+        $subjectLevel = Input::get('subjectLevel');
 
 
-        $examAttempt = ExamAttempt::where('student_id', $studentid)->where('examcode', $examcode)->where('subject_id',$subjectid)->first();
+        $examAttempt = ExamAttempt::where('student_id', $studentid)->where('examcode', $examcode)->where('subject_id', $subjectid)->first();
         if ($examAttempt == null) {
-            $examAttempt = ExamAttempt::create(array('student_id' => $studentid, 'examcode' => $examcode,'subject_level'=>$subjectLevel,'subject_id'=>$subjectid,'subject_passed'=>$subjectPassed, 'examattempt_count' => 1));
+            $examAttempt = ExamAttempt::create(array('student_id' => $studentid, 'examcode' => $examcode, 'subject_level' => $subjectLevel, 'subject_id' => $subjectid, 'subject_passed' => $subjectPassed, 'examattempt_count' => 1));
         } else {
             $examAttempt->examattempt_count = $examAttempt->examattempt_count + 1;
             $examAttempt->subject_passed = $subjectPassed;
@@ -308,42 +376,37 @@ class HomeController extends Controller
     }
 
 
-
-
     public function nextLevelSubject()
     {
 
         $examcode = Input::get('examcode');
         $studentid = Input::get('student_id');
         $subjectid = Input::get('subject_id');
-        $subjectLevel= Input::get('subjectLevel');
-        if($subjectLevel=="level_one"){
-            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode,'subject_level'=>"level_two",'subject_id'=>$subjectid+1));
+        $subjectLevel = Input::get('subjectLevel');
+        if ($subjectLevel == "level_one") {
+            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode, 'subject_level' => "level_two", 'subject_id' => $subjectid + 1));
             return response()->json($nextLevelSubject);
         }
 
-        if($subjectLevel=="level_two"){
-            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode,'subject_level'=>"level_three",'subject_id'=>$subjectid+1));
+        if ($subjectLevel == "level_two") {
+            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode, 'subject_level' => "level_three", 'subject_id' => $subjectid + 1));
             return response()->json($nextLevelSubject);
         }
 
-        if($subjectLevel=="level_three"){
-            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode,'subject_level'=>"level_four",'subject_id'=>$subjectid+1));
+        if ($subjectLevel == "level_three") {
+            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode, 'subject_level' => "level_four", 'subject_id' => $subjectid + 1));
             return response()->json($nextLevelSubject);
         }
 
-        if($subjectLevel=="level_four"){
-            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode,'subject_level'=>"level_five",'subject_id'=>$subjectid+1));
+        if ($subjectLevel == "level_four") {
+            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode, 'subject_level' => "level_five", 'subject_id' => $subjectid + 1));
             return response()->json($nextLevelSubject);
         }
 
-        if($subjectLevel=="level_five"){
-            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode,'subject_level'=>"level_completed",'subject_id'=>$subjectid+1));
+        if ($subjectLevel == "level_five") {
+            $nextLevelSubject = nextLevelSubject::updateOrCreate(array('student_id' => $studentid, 'examcode' => $examcode, 'subject_level' => "level_completed", 'subject_id' => $subjectid + 1));
             return response()->json($nextLevelSubject);
         }
-
-
-
 
 
     }
@@ -415,6 +478,92 @@ class HomeController extends Controller
             $examSubject->update();
             return response()->json($examSubject);
         }
+
+
+    }
+
+
+    public function UpdateStudentAbility(Request $req)
+    {
+
+
+        $ability = StudentAbility::where(['student_id' => Auth::user()->student_id])->first();
+        if ($ability != null) {
+            $ability->pability = round($req->pability, 5);
+            $ability->subject_id = $req->subjectId;
+            $ability->abilityright = round($req->abilityright, 5);
+            $ability->se = round($req->se, 5);
+            $ability->save();
+
+        }
+
+        $student = StudentAbility::where(['student_id' => Auth::user()->student_id])->first();
+        $subquest = DB::table('exam_subject')
+            ->join('exam_question', 'exam_question.subject_code', '=', 'exam_subject.subject_id')
+            ->select('exam_subject.*', 'exam_question.*')
+            ->where(['exam_question.examcode' => $req->examCode, 'exam_subject.subject_id' => $req->subjectId])
+            ->get()->toArray();
+
+
+
+        $subjectquestion = null;
+        shuffle($subquest);
+        for($i = 0; $i < count($subquest); $i++){
+            $halfability = (($student->pability + $student->abilityright) * 0.5);
+            $qhold = ABS($subquest[$i]->qdifficulty * 0.1 - $halfability);
+
+            //dd("qdiff".$subquest[$i]->qdifficulty  .">=".$student->pability."qdiff".$subquest[$i]->qdifficulty * 0.1."<=".$student->abilityright);
+
+            if (($subquest[$i]->qdifficulty  >= $student->pability) && ($subquest[$i]->qdifficulty * 0.1 <= $student->abilityright)) {
+                $subjectquestion = $subquest[$i];
+               // dd($subjectquestion);
+
+            } else if (ABS($subquest[$i]->qdifficulty * 0.1 - $halfability) < $qhold) {
+
+                $subjectquestion = $subquest[$i];
+            } else {
+                $subjectquestion = $subquest[$i];
+            }
+        }
+
+
+        return response()->json($subjectquestion);
+
+
+
+    }
+
+
+    public function CountQuestionAsked(Request $request)
+    {
+
+        $qasked = DB::table('result')
+
+            ->join('exam_question','exam_question.id','=','result.ques_id')
+            ->select('result.*','exam_question.qdifficulty')
+            ->where(['result.student_id' => Auth::user()->student_id])
+            ->get();
+
+
+
+
+
+
+
+
+
+        return response()->json([$qasked]);
+    }
+
+    public function CheckCorrectAnswer(Request $request)
+    {
+
+        $iscorrectAnswer = DB::table('result')
+            ->select('result.*')
+            ->where(['result.student_id' => Auth::user()->student_id, 'result.ques_id' => $request->ques_id])
+            ->get();
+
+        return response()->json([$iscorrectAnswer]);
 
 
     }

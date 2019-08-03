@@ -53,6 +53,9 @@ Route::delete('test',function(){
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/result', 'HomeController@ResultList');
     Route::get('/admit_card', 'HomeController@PrintAdmitCard');
+    Route::post('/countquestionasked', 'HomeController@CountQuestionAsked');
+    Route::post('/checkforcorrectanswer', 'HomeController@CheckCorrectAnswer');
+    Route::post('/updatestudentability', 'HomeController@UpdateStudentAbility');
     Route::post('/getdetailresult', 'HomeController@Get_Detail_Result');
     Route::post('/getsingleresult', 'HomeController@Get_Single_Result');
     Route::post('/updateexamlist', 'HomeController@Updateexamlist');
@@ -72,6 +75,7 @@ Route::delete('test',function(){
     //Admin
     Route::get('/Exams', 'AdminController@showExams')->name('MyExams');
     Route::get('/addstudent', 'AdminController@Addstudent')->name('addstudent');
+     Route::post('/studentability', 'AdminController@StudentAbility');
     Route::get('/liststudent', 'AdminController@showstudent')->name('studentlist');
     Route::post('/addquestion', 'AdminController@Addquestion');
     Route::get('/deleteexam/{examcode}', 'AdminController@DeleteExam')->name('trash-exam');

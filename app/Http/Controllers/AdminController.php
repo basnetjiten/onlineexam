@@ -6,6 +6,7 @@ use App\ExamAttempt;
 use App\nextLevelSubject;
 use App\ref_result;
 use App\result;
+use App\StudentAbility;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
@@ -105,7 +106,7 @@ class AdminController extends Controller
     public function Addquestion(Request $req)
     {
 
-        dump($req->all());
+       // dump($req->all());
 
         //|image|mimes:jpeg,png,jpg,gif,svg|max:2048
         $validator = Validator::make($req->all(), [
@@ -193,7 +194,7 @@ class AdminController extends Controller
             $addquestion->owner_id = $req->admin_id;
             $addquestion->correct_option = $req->correct_option;
             $addquestion->level = $req->level;
-
+            $addquestion->qdifficulty = $req->qdifficulty;
             $addquestion->save();
 
             return response()->json($addquestion);
@@ -304,6 +305,9 @@ class AdminController extends Controller
             $addquestion->owner_id = $req->admin_id;
             $addquestion->correct_option = $req->correct_option;
             $addquestion->level = $req->level;
+
+            $addquestion->qdifficulty = $req->qdifficulty;
+
 
             $addquestion->save();
 
@@ -537,4 +541,16 @@ class AdminController extends Controller
 
         //   return view('adminchild.updatestudent');
     }
+
+
+    public function StudentAbility(Request $req)
+    {
+
+        $studentAbility = StudentAbility::updateOrCreate(
+            ['student_id' => $req->student_id, 'subject_id'=>"none",'pability' => $req->pability, 'abilityright' => $req->abilityright, 'se' => $req->se]
+        );
+        return response()->json($studentAbility);
+    }
+
+
 }

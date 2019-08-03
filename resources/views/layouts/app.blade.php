@@ -77,6 +77,7 @@
     tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
   });
 
+
     </script>
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -462,7 +463,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a >
+                    <a>
                         {{'Online Exam'}}
                     </a>
                 </div>
@@ -875,7 +876,6 @@
                     console.log(data.question[val]);
 
 
-
                     // if(cal_marks.hasOwnProperty(data.cat[n].subject)) {
                     no = +no + +1;
                     $('#show_detail_result_info').append(
@@ -1024,7 +1024,7 @@
                         }
 
                         $('#result_active_process' + $rank).append("<th>" + sorted_total_marks[val][1] + "</th>")
-                        $('#result_active_process' + $rank).append('<button type="button" class="btn btn-warning" onclick="detailResult(\''  + $examcode + '\',\'' + sorted_total_marks[val][0] + '\')">Detail</button>');
+                        $('#result_active_process' + $rank).append('<button type="button" class="btn btn-warning" onclick="detailResult(\'' + $examcode + '\',\'' + sorted_total_marks[val][0] + '\')">Detail</button>');
                     }
                 }
 
@@ -1209,7 +1209,7 @@
         $('#subject_button').text($sub);
     }
 
-    function DisplayQuestion($no, $id, $question, $A, $B, $C, $D, $m, $nm, $co, $l, $image, $ia, $ib, $ic, $id) {
+    function DisplayQuestion($no, $id, $question, $A, $B, $C, $D, $m, $nm, $co, $l, $image, $ia, $ib, $ic, $id,$qdif) {
 
         $('#show_selected_question-model').modal('show');
         $('.modal-title').text('Question ');
@@ -1224,7 +1224,8 @@
         $('#NM').text($nm);
         $('#CO').text($co);
         $('#L').text($l);
-        $('#dqi').text('');
+        $('#L').text($l);
+        $('#qdif').text($qdif);
         $img = "images/" + $image;
         if ($image) {
 
@@ -1274,7 +1275,7 @@
     }
 
 
-    function editExam($exam_id,$examcode,$examtitle,$publish,$tname,$examtime,$category,$random,$examtime,$examattempt,$admin_id,$admin_email){
+    function editExam($exam_id, $examcode, $examtitle, $publish, $tname, $examtime, $category, $random, $examtime, $examattempt, $admin_id, $admin_email) {
 
         $('#update_exam').modal('show');
         $('.modal-title').val('Update Exam');
@@ -1290,9 +1291,6 @@
 
 
     }
-
-
-
 
 
     function EditQuestion($no, $id, $question, $A, $B, $C, $D, $m, $nm, $co, $l, $image, $ima, $imb, $imc, $imd) {
@@ -1386,8 +1384,6 @@
     }
 
 
-
-
     function Editdetail(id, name, student_id) {
         //        console.log(d.fee);
         $('#edit').modal('show');
@@ -1423,7 +1419,7 @@
                     xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
                 },
                 data: {
-                    'id':id
+                    'id': id
                 },
 
                 success: function (data) {
@@ -1449,6 +1445,7 @@
                 //       alert( selectednumbers[i]);
             });
 
+
             $.ajax({
                 type: 'POST',
                 url: 'liststudent',
@@ -1460,7 +1457,7 @@
                     'name': $('input[name=name]').val(),
                     'admin_id': $('input[name=admin_id]').val(),
                     'admin_email': $('input[name=admin_email]').val(),
-                  'fee': $('select[name=fee]').val(),
+                    'fee': $('select[name=fee]').val(),
                     'contact': $('input[name=contact]').val(),
                     'category': JSON.stringify(selectednumbers),
                     'password': $('input[name=password]').val(),
@@ -1520,7 +1517,37 @@
                         console.log("ABC");
                     }
                 }
+            });
+
+            //add student initial ability
+            let ACCURACY = 0.7;
+            //starting ability is between 90 - 95
+            let ABILITY = 0;
+            console.log(ABILITY);
+            let ABILITYRIGHT = 0;
+            let SE = ACCURACY;
+
+//initialize student initial ability
+            $.ajax({
+                type: 'POST',
+                url: '/studentability',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                },
+
+                data: {
+                    student_id: $('input[name=student_id]').val(),
+                    pability: ABILITY,
+                    abilityright:ABILITYRIGHT,
+                    se: SE,
+
+                },
+                success: function (data) {
+                    console.log(data);
+                }
             })
+
+
         });
     });
 
@@ -1541,6 +1568,7 @@
             data.append('option_C', $('input[name=option_C]').val());
             data.append('option_D', $('input[name=option_D]').val());
             data.append('marks', $('input[name=marks]').val());
+            data.append('qdifficulty', $('input[name=qdifficulty]').val());
             data.append('category', $('input[name=category]').val());
             data.append('examcode', $('input[name=examcode]').val());
             data.append('subject_code', $('input[name=current_subject_id]').val());
@@ -1880,10 +1908,6 @@
 </script>
 
 
-
-
-
-
 <script type="text/javascript">
     $(document).ready(function () {
         $("#addexam").click(function () {
@@ -1954,9 +1978,6 @@
         });
     });
 </script>
-
-
-
 
 
 <!-- Scripts -->

@@ -306,6 +306,15 @@
                                                             </div>
                                                         </div>
 
+
+                                                        <div class="form-group">
+                                                            <label class="control-label col-sm-3" for="negative_marks">Question Difficulty :</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" id="qdifficulty" name="qdifficulty" placeholder="Ex : 16" required>
+                                                                <p class="negative_marks_error text-center alert alert-danger hidden"></p>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="form-group">
                                                             <label class="control-label col-sm-3" for="correct_option">Correct Option :</label>
                                                             <div class="col-sm-8">
@@ -405,6 +414,15 @@
                                                             <span class="control-label text-left" id="C"></span>
                                                             <span id="dci"></span>
                                                     </div>
+                                              </div>
+
+
+                                              <div class="form-group">
+                                                  <label class="col-sm-4 text-right"> Question Difficulty</label>
+                                                  <div class="col-sm-8">
+                                                      <span class="control-label text-left" id="C"></span>
+                                                      <span id="qdif"></span>
+                                                  </div>
                                               </div>
 
                                               <div class="form-group">
