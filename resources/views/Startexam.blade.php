@@ -243,244 +243,242 @@
 
                             <!-- Questions -->
                             <?php $no = 1; $tmarks = 0;?>
-                          {{--  @foreach($subjectquestion as $subjectquestion)
-                                @if (($subjectquestion->qdifficulty * 0.1 >= $student->pability) && ($subjectquestion->qdifficulty * 0.1 <= $student->abilityright))
---}}
+                            {{--  @foreach($subjectquestion as $subjectquestion)
+                                  @if (($subjectquestion->qdifficulty * 0.1 >= $student->pability) && ($subjectquestion->qdifficulty * 0.1 <= $student->abilityright))
+  --}}
 
 
-                                    @if ($no===1)
-                                        <div id="ques_block{{$subjectquestion->id}}" class="col-sm-8 hideme ">
-                                            <script>
-                                                var c_s_set = '{{$subjectquestion->subject}}';
-                                            </script>
-                                            @else
-                                                <div id="ques_block{{$subjectquestion->id}}"
-                                                     class="col-sm-8 hideme hidden">
+                            @if ($no===1)
+                                <div id="ques_block{{$subjectquestion->id}}" class="col-sm-8 hideme ">
+                                    <script>
+                                        var c_s_set = '{{$subjectquestion->subject}}';
+                                    </script>
+                                    @else
+                                        <div id="ques_block{{$subjectquestion->id}}"
+                                             class="col-sm-8 hideme hidden">
 
-                                                    @endif
-                                                    <div class="card">
-                                                        <div class="alert alert-light text-justify col-sm-12">
-                                                            <input type="hidden" class="current_qusetion_no" name="current_qusetion_no"
-                                                                   value=1>
+                                            @endif
+                                            <div class="card">
+                                                <div class="alert alert-light text-justify col-sm-12">
+                                                    <input type="hidden" class="current_qusetion_no"
+                                                           name="current_qusetion_no"
+                                                           value=1>
 
-                                                            <h4 id="quest" class=" modal-title text-dark"><b> <span
-                                                                            class="setqno">{{$no++}}</span>
-                                                                    :</b> {{$subjectquestion->question}}</h4>
-                                                            {{-- @if ($subjectquestion->image != NULL)
-                                                                 --}}{{--<div>
+                                                    <h4 id="quest" class=" modal-title text-dark"><b> <span
+                                                                    class="setqno">{{$no++}}</span>
+                                                            :</b> {{$subjectquestion->question}}</h4>
+                                                    {{-- @if ($subjectquestion->image != NULL)
+                                                         --}}{{--<div>
+                                                             <img class="img-responsive center-block"
+                                                                  src="http://www.allexamcorner.org/public/images/{!!$subjectquestion->image!!}">
+                                                         </div>--}}{{--
+                                                     @endif--}}
+                                                </div>
+                                                <div class="card-block ">
+                                                    <!-- radio button -->
+                                                    <form action="#" id="examopt">
+                                                        <p id="opt1" class="col-sm-12">
+                                                            <input type="radio"
+                                                                   id="optionA{{$subjectquestion->id}}"
+                                                                   name="option{{$subjectquestion->id}}"
+                                                                   value="A">
+                                                            <label for="optionA{{$subjectquestion->id}}">{!!$subjectquestion->option_A!!}</label>
+                                                            @if ($subjectquestion->image_A != NULL)
+                                                                {{--<div>
+                                                                    <img class="img-responsive center-block"
+                                                                         style="max-width: 250px; max-height: 359px;"
+                                                                         src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_A!!}">
+                                                                </div>--}}
+                                                            @endif
+
+                                                        </p>
+
+                                                        <p id="opt2" class="col-sm-12">
+                                                            <input type="radio"
+                                                                   id="optionB{{$subjectquestion->id}}"
+                                                                   name="option{{$subjectquestion->id}}"
+                                                                   value="B">
+                                                            <label for="optionB{{$subjectquestion->id}}">{!!$subjectquestion->option_B!!}</label>
+                                                            @if ($subjectquestion->image_B != NULL)
+                                                                {{-- <div>
                                                                      <img class="img-responsive center-block"
-                                                                          src="http://www.allexamcorner.org/public/images/{!!$subjectquestion->image!!}">
-                                                                 </div>--}}{{--
-                                                             @endif--}}
-                                                        </div>
-                                                        <div class="card-block ">
-                                                            <!-- radio button -->
-                                                            <form action="#" id="examopt">
-                                                                <p id="opt1" class="col-sm-12">
-                                                                    <input type="radio"
-                                                                           id="optionA{{$subjectquestion->id}}"
-                                                                           name="option{{$subjectquestion->id}}"
-                                                                           value="A">
-                                                                    <label for="optionA{{$subjectquestion->id}}">{!!$subjectquestion->option_A!!}</label>
-                                                                    @if ($subjectquestion->image_A != NULL)
-                                                                        {{--<div>
-                                                                            <img class="img-responsive center-block"
-                                                                                 style="max-width: 250px; max-height: 359px;"
-                                                                                 src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_A!!}">
-                                                                        </div>--}}
-                                                                    @endif
+                                                                          style="max-width: 250px; max-height: 359px;"
+                                                                          src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_B!!}">
+                                                                 </div>--}}
+                                                            @endif
 
-                                                                </p>
+                                                        </p>
 
-                                                                <p id="opt2" class="col-sm-12">
-                                                                    <input type="radio"
-                                                                           id="optionB{{$subjectquestion->id}}"
-                                                                           name="option{{$subjectquestion->id}}"
-                                                                           value="B">
-                                                                    <label for="optionB{{$subjectquestion->id}}">{!!$subjectquestion->option_B!!}</label>
-                                                                    @if ($subjectquestion->image_B != NULL)
-                                                                        {{-- <div>
-                                                                             <img class="img-responsive center-block"
-                                                                                  style="max-width: 250px; max-height: 359px;"
-                                                                                  src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_B!!}">
-                                                                         </div>--}}
-                                                                    @endif
+                                                        <p id="opt3" class="col-sm-12">
+                                                            <input type="radio"
+                                                                   id="optionC{{$subjectquestion->id}}"
+                                                                   name="option{{$subjectquestion->id}}"
+                                                                   value="C">
+                                                            <label id="optc"
+                                                                   for="optionC{{$subjectquestion->id}}">{!!$subjectquestion->option_C!!}</label>
+                                                            @if ($subjectquestion->image_C != NULL)
+                                                                {{--<div>
+                                                                    <img class="img-responsive center-block"
+                                                                         style="max-width: 250px; max-height: 359px;"
+                                                                         src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_C!!}">
+                                                                </div>--}}
+                                                            @endif
 
-                                                                </p>
+                                                        </p>
 
-                                                                <p id="opt3" class="col-sm-12">
-                                                                    <input type="radio"
-                                                                           id="optionC{{$subjectquestion->id}}"
-                                                                           name="option{{$subjectquestion->id}}"
-                                                                           value="C">
-                                                                    <label id="optc"
-                                                                           for="optionC{{$subjectquestion->id}}">{!!$subjectquestion->option_C!!}</label>
-                                                                    @if ($subjectquestion->image_C != NULL)
-                                                                        {{--<div>
-                                                                            <img class="img-responsive center-block"
-                                                                                 style="max-width: 250px; max-height: 359px;"
-                                                                                 src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_C!!}">
-                                                                        </div>--}}
-                                                                    @endif
+                                                        <p id="opt4" class="col-sm-12">
+                                                            <input type="radio"
+                                                                   id="optionD{{$subjectquestion->id}}"
+                                                                   name="option{{$subjectquestion->id}}"
+                                                                   value="D">
+                                                            <label for="optionD{{$subjectquestion->id}}">{!!$subjectquestion->option_D!!}</label>
+                                                            @if ($subjectquestion->image_D != NULL)
+                                                                {{--  <div>
+                                                                      <img style="max-width: 250px; max-height: 359px;"
+                                                                           class="img-responsive center-block"
+                                                                           src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_D!!}">
+                                                                  </div>--}}
+                                                            @endif
 
-                                                                </p>
+                                                        </p>
 
-                                                                <p id="opt4" class="col-sm-12">
-                                                                    <input type="radio"
-                                                                           id="optionD{{$subjectquestion->id}}"
-                                                                           name="option{{$subjectquestion->id}}"
-                                                                           value="D">
-                                                                    <label for="optionD{{$subjectquestion->id}}">{!!$subjectquestion->option_D!!}</label>
-                                                                    @if ($subjectquestion->image_D != NULL)
-                                                                        {{--  <div>
-                                                                              <img style="max-width: 250px; max-height: 359px;"
-                                                                                   class="img-responsive center-block"
-                                                                                   src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_D!!}">
-                                                                          </div>--}}
-                                                                    @endif
-
-                                                                </p>
-
-                                                            </form>
-                                                            <input name="correctoption" type="hidden"
-                                                                   id="correctoption{{$subjectquestion->id}}"
-                                                                   value="{{$subjectquestion->correct_option}}">
-                                                            <input name="marks" type="hidden"
-                                                                   id="marks{{$subjectquestion->id}}"
-                                                                   value="{{$subjectquestion->marks}}">
-                                                            <input name="negmarks" type="hidden"
-                                                                   id="negmarks{{$subjectquestion->id}}"
-                                                                   value="{{$subjectquestion->negative_marks}}">
-                                                            <input name="qid" type="hidden"
-                                                                   id="qid"
-                                                                   value="{{$subjectquestion->id}}">
+                                                    </form>
+                                                    <input name="correctoption" type="hidden"
+                                                           id="correctoption{{$subjectquestion->id}}"
+                                                           value="{{$subjectquestion->correct_option}}">
+                                                    <input name="marks" type="hidden"
+                                                           id="marks{{$subjectquestion->id}}"
+                                                           value="{{$subjectquestion->marks}}">
+                                                    <input name="negmarks" type="hidden"
+                                                           id="negmarks{{$subjectquestion->id}}"
+                                                           value="{{$subjectquestion->negative_marks}}">
+                                                    <input name="qid" type="hidden"
+                                                           id="qid"
+                                                           value="{{$subjectquestion->id}}">
 
 
-                                                            <input name="qdifficulty" type="hidden"
-                                                                   id="qdifficulty"
-                                                                   value="{{$subjectquestion->qdifficulty}}">
-                                                            <!-- End Radio Button -->
-                                                            <?php $tmarks = $tmarks + $subjectquestion->marks; ?>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-xs-12 text-center"
-                                                                 style="margin-bottom:20px;">
-                                                                @if ($no ==1)
-                                                                    {{-- <button type="button"
-                                                                             onclick="Previous('{{$no-1}}',{{$subjectquestion}})"
-                                                                             id="previous" style="background: #298c38"
-                                                                             class="btn btn-outline-secondary text-white select-button">
-                                                                         Previous
-                                                                     </button>--}}
-                                                                @endif
-                                                                <button type="button"
-                                                                        onclick="Save('{{$subjectquestion->qdifficulty}}','{{$student->pability}}','{{$subjectquestion->subject_id}}','{{$subjectquestion->examcode}}','{{$student->abilityright}}')"
-                                                                        style="background: #298c38"
-                                                                        class="btn btn-outline-secondary text-white select-button">
-                                                                    Save &
-                                                                    Next
-                                                                </button>
-                                                              {{--  <button type="button"
-                                                                        onclick="Reminder('{{$no-1}}',{{$subjectquestion->question}})"
-                                                                        style="background: #298c38"
-                                                                        class="btn btn-outline-secondary text-white select-button">
-                                                                    Reminder
-                                                                </button>--}}
-                                                                    <button id="examfinished" type="button"
-
-                                                                            onclick="finish('{{$subjectquestion->id}}','{{$subjectquestion->examcode}}','{{$userId}}','{{$subjectquestion->subject_type}}','{{$subjectquestion->subject_code}}','{{$subjectquestion->subject_level}}','{{$subjectquestion->pass_mark}}','{{$subjectId}}')"
-                                                                            style="background: #298c38; background-color: #0495c9;"
-                                                                            class="Finshexam btn btn-outline-secondary text-white select-button
-"
-                                                                    >Finish
-                                                                    </button>
-
-                                                               {{-- <button type="button"
-                                                                        onclick="Skip('{{$no-1}}',{{$subjectquestion->question}})"
-                                                                        style="background: rgb(251, 101, 96)"
-                                                                        class="btn btn-outline-secondary text-white select-button">
-                                                                    Skip
-                                                                </button>--}}
-
-
-
-
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
+                                                    <input name="qdifficulty" type="hidden"
+                                                           id="qdifficulty"
+                                                           value="{{$subjectquestion->qdifficulty}}">
+                                                    <!-- End Radio Button -->
+                                                    <?php $tmarks = $tmarks + $subjectquestion->marks; ?>
                                                 </div>
-
-                                            {{--@endif
-                                            @endforeach--}}
-                                            <script>
-                                                document.getElementById("total_number_of_question").innerHTML = '{{$no-1}}';
-                                                document.getElementById("Total_Marks").innerHTML = '{{$tmarks}}';
-                                            </script>
-
-                                            <div class="col-sm-4">
-
-                                                <div class=" card twitter-card">
-                                                    <div class="card-header">
-                                                        <!--<i class="icofont icofont-social-twitter"></i> -->
-                                                        <div class="col-sm-6 d-inline-block">
-                                                            <h4 id="display_selected_subject"></h4>
-
-                                                        </div>
-
-                                                        <div class="card-header-right">
-                                                            {{-- <button id="filter_button" type="button"
-                                                                     class="btn btn-info dropdown-toggle"
-                                                                     data-toggle="dropdown" aria-haspopup="true"
-                                                                     aria-expanded="false">
-                                                                 Change Sub
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center"
+                                                         style="margin-bottom:20px;">
+                                                        @if ($no ==1)
+                                                            {{-- <button type="button"
+                                                                     onclick="Previous('{{$no-1}}',{{$subjectquestion}})"
+                                                                     id="previous" style="background: #298c38"
+                                                                     class="btn btn-outline-secondary text-white select-button">
+                                                                 Previous
                                                              </button>--}}
-                                                            <input type="hidden" id="current_selected_subject"
-                                                                   value='Null'>
+                                                        @endif
+                                                        <button type="button"
+                                                                onclick="Save('{{$subjectquestion->qdifficulty}}','{{$student->pability}}','{{$subjectquestion->subject_id}}','{{$subjectquestion->examcode}}','{{$student->abilityright}}')"
+                                                                style="background: #298c38"
+                                                                class="btn btn-outline-secondary text-white select-button">
+                                                            Save &
+                                                            Next
+                                                        </button>
+                                                        {{--  <button type="button"
+                                                                  onclick="Reminder('{{$no-1}}',{{$subjectquestion->question}})"
+                                                                  style="background: #298c38"
+                                                                  class="btn btn-outline-secondary text-white select-button">
+                                                              Reminder
+                                                          </button>--}}
+                                                        <button id="examfinished" type="button"
 
-                                                            <script type="text/javascript">
-                                                                document.getElementById("current_selected_subject").setAttribute('value', c_s_set);
-                                                                document.getElementById("display_selected_subject").innerHTML = c_s_set;
-                                                            </script>
+                                                                onclick="finish('{{$subjectquestion->id}}','{{$subjectquestion->examcode}}','{{$userId}}','{{$subjectquestion->subject_type}}','{{$subjectquestion->subject_code}}','{{$subjectquestion->subject_level}}','{{$subjectquestion->pass_mark}}','{{$subjectId}}')"
+                                                                style="background: #298c38; background-color: #0495c9;"
+                                                                class="Finshexam btn btn-outline-secondary text-white select-button
+"
+                                                        >Finish
+                                                        </button>
 
-                                                            {{--<div class="dropdown-menu">
-                                                                @foreach($subject as $item)
-                                                                    <a onclick="change_selected_question('{{$item->subject}}',{{$question}})"
-                                                                       class="dropdown-item"
-                                                                       href="#"> {{$item->subject}} </a>
-                                                                @endforeach
-                                                            </div>--}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-block text-left rearrange_q">
-                                                        <!-- Change Questions Button-->
-                                                    <?php $q_no = 1; ?>
-
-                                                    <!-- <button id="{{$subjectquestion->subject}}{{$subjectquestion->id}}" onclick="show_selected_question('{{$subjectquestion->subject}}','{{$subjectquestion->id}}', {{$q_no}})" class="btn btn-warning btn-icon circle-btn">{{ $q_no }}</button>
-                                                                -->
-                                                        <button id="btn{{$subjectquestion->id}}"
-                                                                class="one cl btn btn-light btn-outline-success border border-secondary btn-icon circle-btn">{{ $q_no++ }}</button>
-
-                                                        <script type="text/javascript">
-                                                            //  alert("qq");
-                                                            $(document).ready(function () {
-                                                                $('#btn{{$subjectquestion->id}}').on('vclick click mousedown touchstart', function (e) {
-                                                                    //      alert("qq");
-                                                                    show_selected_question('{{$subjectquestion->subject}}', '{{$subjectquestion->id}}', '{{$q_no -1 }}');
-                                                                });
-                                                            });
-                                                        </script>
+                                                        {{-- <button type="button"
+                                                                 onclick="Skip('{{$no-1}}',{{$subjectquestion->question}})"
+                                                                 style="background: rgb(251, 101, 96)"
+                                                                 class="btn btn-outline-secondary text-white select-button">
+                                                             Skip
+                                                         </button>--}}
 
 
                                                     </div>
+
                                                 </div>
+
                                             </div>
 
-
                                         </div>
+
+                                        {{--@endif
+                                        @endforeach--}}
+                                        <script>
+                                            document.getElementById("total_number_of_question").innerHTML = '{{$no-1}}';
+                                            document.getElementById("Total_Marks").innerHTML = '{{$tmarks}}';
+                                        </script>
+
+                                        <div class="col-sm-4">
+
+                                            <div class=" card twitter-card">
+                                                <div class="card-header">
+                                                    <!--<i class="icofont icofont-social-twitter"></i> -->
+                                                    <div class="col-sm-6 d-inline-block">
+                                                        <h4 id="display_selected_subject"></h4>
+
+                                                    </div>
+
+                                                    <div class="card-header-right">
+                                                        {{-- <button id="filter_button" type="button"
+                                                                 class="btn btn-info dropdown-toggle"
+                                                                 data-toggle="dropdown" aria-haspopup="true"
+                                                                 aria-expanded="false">
+                                                             Change Sub
+                                                         </button>--}}
+                                                        <input type="hidden" id="current_selected_subject"
+                                                               value='Null'>
+
+                                                        <script type="text/javascript">
+                                                            document.getElementById("current_selected_subject").setAttribute('value', c_s_set);
+                                                            document.getElementById("display_selected_subject").innerHTML = c_s_set;
+                                                        </script>
+
+                                                        {{--<div class="dropdown-menu">
+                                                            @foreach($subject as $item)
+                                                                <a onclick="change_selected_question('{{$item->subject}}',{{$question}})"
+                                                                   class="dropdown-item"
+                                                                   href="#"> {{$item->subject}} </a>
+                                                            @endforeach
+                                                        </div>--}}
+                                                    </div>
+                                                </div>
+                                                <div class="card-block text-left rearrange_q">
+                                                    <!-- Change Questions Button-->
+                                                <?php $q_no = 1; ?>
+
+                                                <!-- <button id="{{$subjectquestion->subject}}{{$subjectquestion->id}}" onclick="show_selected_question('{{$subjectquestion->subject}}','{{$subjectquestion->id}}', {{$q_no}})" class="btn btn-warning btn-icon circle-btn">{{ $q_no }}</button>
+                                                                -->
+                                                    <button id="btn{{$subjectquestion->id}}"
+                                                            class="one cl btn btn-light btn-outline-success border border-secondary btn-icon circle-btn">{{ $q_no++ }}</button>
+
+                                                    <script type="text/javascript">
+                                                        //  alert("qq");
+                                                        $(document).ready(function () {
+                                                            $('#btn{{$subjectquestion->id}}').on('vclick click mousedown touchstart', function (e) {
+                                                                //      alert("qq");
+                                                                show_selected_question('{{$subjectquestion->subject}}', '{{$subjectquestion->id}}', '{{$q_no -1 }}');
+                                                            });
+                                                        });
+                                                    </script>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                </div>
                         </div>
 
                     </div>
@@ -551,12 +549,10 @@
 
 
         // Save Answer
-        function Save($qdifficulty, $pability, $subjectId, $examCode,$abilityRight) {
+        function Save($qdifficulty, $pability, $subjectId, $examCode, $abilityRight) {
 
 
-
-
-            let count=1;
+            let count = 1;
 
             //ALGORITHM STARTS FROM HERE
             let PEXP = 0;
@@ -576,9 +572,9 @@
 
 
             if ($('input[name=option' + questionId + ']:checked').val() == correctoption) {
-                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), marks,$subjectId);
+                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), marks, $subjectId);
             } else {
-                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), negmarks,$subjectId);
+                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), negmarks, $subjectId);
 
             }
 
@@ -597,7 +593,6 @@
                     console.log(data[0]);
 
 
-
                     console.log($qdifficulty);
 
                     //adding  difficulty of asked questions so far and the current question
@@ -607,7 +602,7 @@
                         console.log(data[0][i].givenmarks);
                         //calculating total correct answer given so far
                         if (data[0][i].givenmarks > 0) {
-                            presult = presult+1;
+                            presult = presult + 1;
                             console.log("score count" + presult);
 
                         }
@@ -655,25 +650,27 @@
                     xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
                 },
                 data: {
-                    examCode:$examCode,
-                    subjectId:$subjectId
+                    examCode: $examCode,
+                    subjectId: $subjectId
                 },
                 success: function (data) {
                     console.log(data);
 
                     //update hidden value for the question fetched
-                    console.log("next_question"+data[0].id);
+                    console.log("next_question" + data[0].id);
                     var questionNo = $('input[name="current_qusetion_no"]:hidden').val();
-                    console.log("quest"+questionNo);
+                    console.log("quest" + questionNo);
                     $('input[name="marks"]:hidden').val(data[0].marks);
                     $('input[name="negmarks"]:hidden').val(data[0].negative_marks);
                     $('input[name="correctoption"]:hidden').val(data[0].correct_option);
                     $('input[name="qdifficulty"]:hidden').val(data[0].qdifficulty);
                     $('input[name="qid"]:hidden').val(data[0].id);
 
-
+                    if (questionNo == 2) {
+                        alert("All 25 Questions has been Attempted!\n Please Click Finish to see the Result.");
+                    }
                     //increase the current question count by 1
-                    $('#quest').text(++questionNo + '.' +' '+ data[0].question);
+                    $('#quest').text(++questionNo + '.' + ' ' + data[0].question);
                     //update the question count
                     $('input[name="current_qusetion_no"]:hidden').val(questionNo);
 
@@ -709,71 +706,66 @@
             //end of fetch next question ajax
 
 
-
-
             //ajax to check for correct answer to update the correct ability for persons
 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/checkforcorrectanswer',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
-                        },
-                        data: {
-                            ques_id: questionId,
-                        },
-                        success: function (data) {
-                            console.log("givenmarks" + data[0][0].givenmarks);
-                            if (data[0][0].givenmarks > 0) {
-                                // ability if next answer right
+            $.ajax({
+                type: 'POST',
+                url: '/checkforcorrectanswer',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                },
+                data: {
+                    ques_id: questionId,
+                },
+                success: function (data) {
+                    console.log("givenmarks" + data[0][0].givenmarks);
+                    if (data[0][0].givenmarks > 0) {
+                        // ability if next answer right
 
 
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/updatestudentability',
-                                    beforeSend: function (xhr) {
-                                        xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
-                                    },
-                                    data: {
-                                        pability: $pability,
-                                        abilityright: ABILITYRIGHT,
-                                        se: SE,
-                                        subjectId: $subjectId,
-                                        examCode: $examCode
-                                    },
-                                    success: function (data) {
-                                        console.log(data);
-                                    }
-                                });
-
-
+                        $.ajax({
+                            type: 'POST',
+                            url: '/updatestudentability',
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                            },
+                            data: {
+                                pability: $pability,
+                                abilityright: ABILITYRIGHT,
+                                se: SE,
+                                subjectId: $subjectId,
+                                examCode: $examCode
+                            },
+                            success: function (data) {
+                                console.log(data);
                             }
-                            else if(data[0][0].givenmarks <= 0){
-                                console.log("wrong givenmarks"+data[0][0].givenmarks);
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/updatestudentability',
-                                    beforeSend: function (xhr) {
-                                        xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
-                                    },
-                                    data: {
-                                        pability: ABILITY,
-                                        abilityright: $abilityRight,
-                                        se: SE,
-                                        subjectId: $subjectId,
-                                        examCode: $examCode
-                                    },
-                                    success: function (data) {
-console.log(data);
-                                    }
-                                });
+                        });
+
+
+                    }
+                    else if (data[0][0].givenmarks <= 0) {
+                        console.log("wrong givenmarks" + data[0][0].givenmarks);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/updatestudentability',
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                            },
+                            data: {
+                                pability: ABILITY,
+                                abilityright: $abilityRight,
+                                se: SE,
+                                subjectId: $subjectId,
+                                examCode: $examCode
+                            },
+                            success: function (data) {
+                                console.log(data);
                             }
-                        }
-                    });
+                        });
+                    }
+                }
+            });
             //end of persons ability update based on correct or incorrect answers
-
-
-
 
 
         }
@@ -891,7 +883,7 @@ console.log(data);
         }
 
         // Add AddUserResponse
-        function AddUserResponse(ques_id, selected_option, givenmarks,subjectId) {
+        function AddUserResponse(ques_id, selected_option, givenmarks, subjectId) {
             //    $("#add").addClass('hidden');
             //    $("#spin").removeClass('hidden');
             let data = new FormData();
@@ -936,7 +928,7 @@ console.log(data);
         }
 
         function finish($questionId, $examCode, $studentId, $subjectType, $subjectId, $subjectLevel, $passMark, $subjectIdPk) {
-            console.log("passmark"+$passMark);
+            console.log("passmark" + $passMark);
             /* $.ajax({
                  type: "POST",
                  url: '/ajaxupdateexamcount',
