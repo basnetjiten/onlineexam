@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- CSRF Token -->
-    <meta id="token" name="token" content="{{ csrf_token() }}">
+    <meta id="token" name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
@@ -72,7 +72,7 @@
                             me</label>
                     </div>
                 </form>
-                <button id="std-login" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span>
+                <button onclick="studentInitialAbility()" id="std-login" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span>
                     Login
                 </button>
 
@@ -435,6 +435,43 @@
 </div>
 //Student Registeration
 <script>
+    function studentInitialAbility() {
+
+        //add student initial ability
+        let ACCURACY = 0.7;
+        //starting ability is between 90 - 95
+        let ABILITY = 0;
+        console.log(ABILITY);
+        let ABILITYRIGHT = 0;
+        let SE = ACCURACY;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+//initialize student initial ability
+        $.ajax({
+            type: 'POST',
+            url: '/studentinitialability',
+
+
+            data: {
+                student_id: $('input[name=loginstudent_id]').val(),
+                pability: ABILITY,
+                abilityright: ABILITYRIGHT,
+                se: SE,
+
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        })
+    }
+</script>
+<script>
+
     // Register
     $(document).ready(function () {
 

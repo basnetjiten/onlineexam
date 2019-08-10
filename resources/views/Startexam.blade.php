@@ -243,33 +243,33 @@
 
                             <!-- Questions -->
                             <?php $no = 1; $tmarks = 0;?>
-                            @foreach($subjectquestion as $value)
-                                @if (($value->qdifficulty  >= $student->pability) && ($value->qdifficulty * 0.01 <= $student->abilityright))
-
+                          {{--  @foreach($subjectquestion as $subjectquestion)
+                                @if (($subjectquestion->qdifficulty * 0.1 >= $student->pability) && ($subjectquestion->qdifficulty * 0.1 <= $student->abilityright))
+--}}
 
 
                                     @if ($no===1)
-                                        <div id="ques_block{{$value->id}}" class="col-sm-8 hideme ">
+                                        <div id="ques_block{{$subjectquestion->id}}" class="col-sm-8 hideme ">
                                             <script>
-                                                var c_s_set = '{{$value->subject}}';
+                                                var c_s_set = '{{$subjectquestion->subject}}';
                                             </script>
                                             @else
-                                                <div id="ques_block{{$value->id}}"
+                                                <div id="ques_block{{$subjectquestion->id}}"
                                                      class="col-sm-8 hideme hidden">
 
                                                     @endif
                                                     <div class="card">
                                                         <div class="alert alert-light text-justify col-sm-12">
-                                                            <input type="hidden" class="current_qusetion_no" id=""
-                                                                   value='{{$no}}'>
+                                                            <input type="hidden" class="current_qusetion_no" name="current_qusetion_no"
+                                                                   value=1>
 
                                                             <h4 id="quest" class=" modal-title text-dark"><b> <span
                                                                             class="setqno">{{$no++}}</span>
-                                                                    :</b> {{$value->question}}</h4>
-                                                            {{-- @if ($value->image != NULL)
+                                                                    :</b> {{$subjectquestion->question}}</h4>
+                                                            {{-- @if ($subjectquestion->image != NULL)
                                                                  --}}{{--<div>
                                                                      <img class="img-responsive center-block"
-                                                                          src="http://www.allexamcorner.org/public/images/{!!$value->image!!}">
+                                                                          src="http://www.allexamcorner.org/public/images/{!!$subjectquestion->image!!}">
                                                                  </div>--}}{{--
                                                              @endif--}}
                                                         </div>
@@ -278,15 +278,15 @@
                                                             <form action="#" id="examopt">
                                                                 <p id="opt1" class="col-sm-12">
                                                                     <input type="radio"
-                                                                           id="optionA{{$value->id}}"
-                                                                           name="option{{$value->id}}"
+                                                                           id="optionA{{$subjectquestion->id}}"
+                                                                           name="option{{$subjectquestion->id}}"
                                                                            value="A">
-                                                                    <label for="optionA{{$value->id}}">{!!$value->option_A!!}</label>
-                                                                    @if ($value->image_A != NULL)
+                                                                    <label for="optionA{{$subjectquestion->id}}">{!!$subjectquestion->option_A!!}</label>
+                                                                    @if ($subjectquestion->image_A != NULL)
                                                                         {{--<div>
                                                                             <img class="img-responsive center-block"
                                                                                  style="max-width: 250px; max-height: 359px;"
-                                                                                 src="http://www.allexamcorner.org/aecapp/public/images/{!!$value->image_A!!}">
+                                                                                 src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_A!!}">
                                                                         </div>--}}
                                                                     @endif
 
@@ -294,15 +294,15 @@
 
                                                                 <p id="opt2" class="col-sm-12">
                                                                     <input type="radio"
-                                                                           id="optionB{{$value->id}}"
-                                                                           name="option{{$value->id}}"
+                                                                           id="optionB{{$subjectquestion->id}}"
+                                                                           name="option{{$subjectquestion->id}}"
                                                                            value="B">
-                                                                    <label for="optionB{{$value->id}}">{!!$value->option_B!!}</label>
-                                                                    @if ($value->image_B != NULL)
+                                                                    <label for="optionB{{$subjectquestion->id}}">{!!$subjectquestion->option_B!!}</label>
+                                                                    @if ($subjectquestion->image_B != NULL)
                                                                         {{-- <div>
                                                                              <img class="img-responsive center-block"
                                                                                   style="max-width: 250px; max-height: 359px;"
-                                                                                  src="http://www.allexamcorner.org/aecapp/public/images/{!!$value->image_B!!}">
+                                                                                  src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_B!!}">
                                                                          </div>--}}
                                                                     @endif
 
@@ -310,16 +310,16 @@
 
                                                                 <p id="opt3" class="col-sm-12">
                                                                     <input type="radio"
-                                                                           id="optionC{{$value->id}}"
-                                                                           name="option{{$value->id}}"
+                                                                           id="optionC{{$subjectquestion->id}}"
+                                                                           name="option{{$subjectquestion->id}}"
                                                                            value="C">
                                                                     <label id="optc"
-                                                                           for="optionC{{$value->id}}">{!!$value->option_C!!}</label>
-                                                                    @if ($value->image_C != NULL)
+                                                                           for="optionC{{$subjectquestion->id}}">{!!$subjectquestion->option_C!!}</label>
+                                                                    @if ($subjectquestion->image_C != NULL)
                                                                         {{--<div>
                                                                             <img class="img-responsive center-block"
                                                                                  style="max-width: 250px; max-height: 359px;"
-                                                                                 src="http://www.allexamcorner.org/aecapp/public/images/{!!$value->image_C!!}">
+                                                                                 src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_C!!}">
                                                                         </div>--}}
                                                                     @endif
 
@@ -327,15 +327,15 @@
 
                                                                 <p id="opt4" class="col-sm-12">
                                                                     <input type="radio"
-                                                                           id="optionD{{$value->id}}"
-                                                                           name="option{{$value->id}}"
+                                                                           id="optionD{{$subjectquestion->id}}"
+                                                                           name="option{{$subjectquestion->id}}"
                                                                            value="D">
-                                                                    <label for="optionD{{$value->id}}">{!!$value->option_D!!}</label>
-                                                                    @if ($value->image_D != NULL)
+                                                                    <label for="optionD{{$subjectquestion->id}}">{!!$subjectquestion->option_D!!}</label>
+                                                                    @if ($subjectquestion->image_D != NULL)
                                                                         {{--  <div>
                                                                               <img style="max-width: 250px; max-height: 359px;"
                                                                                    class="img-responsive center-block"
-                                                                                   src="http://www.allexamcorner.org/aecapp/public/images/{!!$value->image_D!!}">
+                                                                                   src="http://www.allexamcorner.org/aecapp/public/images/{!!$subjectquestion->image_D!!}">
                                                                           </div>--}}
                                                                     @endif
 
@@ -343,52 +343,52 @@
 
                                                             </form>
                                                             <input name="correctoption" type="hidden"
-                                                                   id="correctoption{{$value->id}}"
-                                                                   value="{{$value->correct_option}}">
+                                                                   id="correctoption{{$subjectquestion->id}}"
+                                                                   value="{{$subjectquestion->correct_option}}">
                                                             <input name="marks" type="hidden"
-                                                                   id="marks{{$value->id}}"
-                                                                   value="{{$value->marks}}">
+                                                                   id="marks{{$subjectquestion->id}}"
+                                                                   value="{{$subjectquestion->marks}}">
                                                             <input name="negmarks" type="hidden"
-                                                                   id="negmarks{{$value->id}}"
-                                                                   value="{{$value->negative_marks}}">
+                                                                   id="negmarks{{$subjectquestion->id}}"
+                                                                   value="{{$subjectquestion->negative_marks}}">
                                                             <input name="qid" type="hidden"
                                                                    id="qid"
-                                                                   value="{{$value->id}}">
+                                                                   value="{{$subjectquestion->id}}">
 
 
                                                             <input name="qdifficulty" type="hidden"
                                                                    id="qdifficulty"
-                                                                   value="{{$value->qdifficulty}}">
+                                                                   value="{{$subjectquestion->qdifficulty}}">
                                                             <!-- End Radio Button -->
-                                                            <?php $tmarks = $tmarks + $value->marks; ?>
+                                                            <?php $tmarks = $tmarks + $subjectquestion->marks; ?>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-xs-12 text-center"
                                                                  style="margin-bottom:20px;">
                                                                 @if ($no ==1)
                                                                     {{-- <button type="button"
-                                                                             onclick="Previous('{{$no-1}}',{{$value}})"
+                                                                             onclick="Previous('{{$no-1}}',{{$subjectquestion}})"
                                                                              id="previous" style="background: #298c38"
                                                                              class="btn btn-outline-secondary text-white select-button">
                                                                          Previous
                                                                      </button>--}}
                                                                 @endif
                                                                 <button type="button"
-                                                                        onclick="Save('{{$value->qdifficulty}}','{{$student->pability}}','{{$value->subject_id}}','{{$value->examcode}}')"
+                                                                        onclick="Save('{{$subjectquestion->qdifficulty}}','{{$student->pability}}','{{$subjectquestion->subject_id}}','{{$subjectquestion->examcode}}','{{$student->abilityright}}')"
                                                                         style="background: #298c38"
                                                                         class="btn btn-outline-secondary text-white select-button">
                                                                     Save &
                                                                     Next
                                                                 </button>
                                                               {{--  <button type="button"
-                                                                        onclick="Reminder('{{$no-1}}',{{$value->question}})"
+                                                                        onclick="Reminder('{{$no-1}}',{{$subjectquestion->question}})"
                                                                         style="background: #298c38"
                                                                         class="btn btn-outline-secondary text-white select-button">
                                                                     Reminder
                                                                 </button>--}}
                                                                     <button id="examfinished" type="button"
 
-                                                                            onclick="finish('{{$value->id}}','{{$value->examcode}}','{{$userId}}','{{$value->subject_type}}','{{$value->subject_code}}','{{$value->subject_level}}','{{$value->pass_mark}}','{{$subjectId}}')"
+                                                                            onclick="finish('{{$subjectquestion->id}}','{{$subjectquestion->examcode}}','{{$userId}}','{{$subjectquestion->subject_type}}','{{$subjectquestion->subject_code}}','{{$subjectquestion->subject_level}}','{{$subjectquestion->pass_mark}}','{{$subjectId}}')"
                                                                             style="background: #298c38; background-color: #0495c9;"
                                                                             class="Finshexam btn btn-outline-secondary text-white select-button
 "
@@ -396,7 +396,7 @@
                                                                     </button>
 
                                                                {{-- <button type="button"
-                                                                        onclick="Skip('{{$no-1}}',{{$value->question}})"
+                                                                        onclick="Skip('{{$no-1}}',{{$subjectquestion->question}})"
                                                                         style="background: rgb(251, 101, 96)"
                                                                         class="btn btn-outline-secondary text-white select-button">
                                                                     Skip
@@ -414,8 +414,8 @@
 
                                                 </div>
 
-                                            @endif
-                                            @endforeach
+                                            {{--@endif
+                                            @endforeach--}}
                                             <script>
                                                 document.getElementById("total_number_of_question").innerHTML = '{{$no-1}}';
                                                 document.getElementById("Total_Marks").innerHTML = '{{$tmarks}}';
@@ -459,17 +459,17 @@
                                                         <!-- Change Questions Button-->
                                                     <?php $q_no = 1; ?>
 
-                                                    <!-- <button id="{{$value->subject}}{{$value->id}}" onclick="show_selected_question('{{$value->subject}}','{{$value->id}}', {{$q_no}})" class="btn btn-warning btn-icon circle-btn">{{ $q_no }}</button>
+                                                    <!-- <button id="{{$subjectquestion->subject}}{{$subjectquestion->id}}" onclick="show_selected_question('{{$subjectquestion->subject}}','{{$subjectquestion->id}}', {{$q_no}})" class="btn btn-warning btn-icon circle-btn">{{ $q_no }}</button>
                                                                 -->
-                                                        <button id="btn{{$value->id}}"
+                                                        <button id="btn{{$subjectquestion->id}}"
                                                                 class="one cl btn btn-light btn-outline-success border border-secondary btn-icon circle-btn">{{ $q_no++ }}</button>
 
                                                         <script type="text/javascript">
                                                             //  alert("qq");
                                                             $(document).ready(function () {
-                                                                $('#btn{{$value->id}}').on('vclick click mousedown touchstart', function (e) {
+                                                                $('#btn{{$subjectquestion->id}}').on('vclick click mousedown touchstart', function (e) {
                                                                     //      alert("qq");
-                                                                    show_selected_question('{{$value->subject}}', '{{$value->id}}', '{{$q_no -1 }}');
+                                                                    show_selected_question('{{$subjectquestion->subject}}', '{{$subjectquestion->id}}', '{{$q_no -1 }}');
                                                                 });
                                                             });
                                                         </script>
@@ -549,32 +549,39 @@
             $("#pls_wait_preparing_exam_room").removeClass('hidden');
         }
 
-        // Show Selected Question
-        /*  function show_selected_question($sub, $id, $q_no) {
-              //  alert($sub+ $id+ $q_no)
-              $('.hideme').addClass('hidden');
-              $('#ques_block' + '' + $id).removeClass('hidden');
-              //   alert('#ques_block'+''+$id);
-              if ({{$no-1}} == $q_no)
-            {
-                $('.Finshexam').removeClass('hidden');
-            }
-            $('.setqno').text($q_no);
-            $('.current_qusetion_no').val($q_no);
-            $('#current_selected_subject').val($sub);
-            $("#display_selected_subject").text($sub);
-        }*/
+
         // Save Answer
-        function Save($qdifficulty, $pability, $subjectId, $examCode) {
+        function Save($qdifficulty, $pability, $subjectId, $examCode,$abilityRight) {
+
+
+
+
+            let count=1;
+
+            //ALGORITHM STARTS FROM HERE
             let PEXP = 0;
             let PVAR = 0;
+            let presult = 0;
+            let SE = 0;
+            let ABILITY = 0;
+            let ABILITYRIGHT = 0;
+
+            //obtain all the hidden value for the
 
             let questionId = $('input[name="qid"]:hidden').val();
             let marks = $('input[name="marks"]:hidden').val();
             let negmarks = $('input[name="negmarks"]:hidden').val();
             let correctoption = $('input[name="correctoption"]:hidden').val();
             let questdifficulty = $('input[name="qdifficulty"]:hidden').val();
-            alert(questionId);
+
+
+            if ($('input[name=option' + questionId + ']:checked').val() == correctoption) {
+                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), marks,$subjectId);
+            } else {
+                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), negmarks,$subjectId);
+
+            }
+
 
             $.ajax({
                 type: 'POST',
@@ -587,56 +594,124 @@
 
                     console.log("question_count" + data[0][0]);
 
-
                     console.log(data[0]);
 
 
-                    //   console.log(data);
-                    // console.log($arr);
 
-                    let correctAnswerCount = 0;
-                    let SE = 0;
-                    let lowLevelabilitysofar = 0;
-                    let abilityforCorrectAnswer = 0;
                     console.log($qdifficulty);
 
-
+                    //adding  difficulty of asked questions so far and the current question
                     for (let i = 0; i < data[0].length; i++) {
-
                         var totaldifficulty = parseInt(data[0][i].qdifficulty * 0.1) + parseInt(questdifficulty * 0.1);
                         console.log("total dificulty of asked question" + questdifficulty);
                         console.log(data[0][i].givenmarks);
-                        //calculating total item count so far
+                        //calculating total correct answer given so far
                         if (data[0][i].givenmarks > 0) {
-                            correctAnswerCount += 1;
-                            console.log("score count" + correctAnswerCount);
+                            presult = presult+1;
+                            console.log("score count" + presult);
 
                         }
 
 
-                        //all the estimation should be inside the total question asked length
-                        let SUCCESS = 1 / (1 + Math.exp((totaldifficulty - $pability)));
-                        PEXP = (PEXP + SUCCESS);
+                        //probability of success of persons for giving the answer
+                        let SUCCESS = 1 / (1 + Math.exp((parseFloat(totaldifficulty) - parseFloat($pability))));
+                        //expected score
+                        PEXP = (PEXP + parseFloat(SUCCESS));
                         console.log(SUCCESS + "AND" + PEXP);
-                        PVAR = PVAR + (SUCCESS * (1 - SUCCESS));
+                        //raw score variance
+                        PVAR = parseFloat(PVAR) + (parseFloat(SUCCESS) * (1 - parseFloat(SUCCESS)));
                         console.log(PVAR);
-                        SE = Math.sqrt(1 / PVAR);
                         if (PVAR < 1) {
                             PVAR = 1;
                         }
+                        //standard error
+                        SE = Math.sqrt(1 / PVAR);
 
-                        //'ability so far
-                        lowLevelabilitysofar = parseFloat($pability) + (parseFloat((correctAnswerCount - PEXP)) / PVAR);
-                        console.log("abilitysofar" + " :" + lowLevelabilitysofar);
-                        console.log("abs of abilitysofar and pability" + Math.abs(parseFloat(lowLevelabilitysofar) - parseFloat($pability)));
 
-                        /* if(Math.abs(parseFloat(lowLevelabilitysofar)-parseFloat($pability)) > 0.01) {
+                        //algorithm assumes that the person will give wrong answer so the lowlevel ability is
+                        ABILITY = parseFloat($pability) + ((parseFloat(presult) - parseFloat(PEXP)) / parseFloat(PVAR));
+
+                        //if answer is right high level ability is calculated as
+                        ABILITYRIGHT = ABILITY + (1 / PVAR);
+                        console.log("abilitysofar" + " :" + ABILITY);
+                        console.log("abs of abilitysofar and pability" + Math.abs(parseInt(ABILITY) - parseInt($pability)));
+
+                        /* if(Math.abs(parseInt(lowLevelabilitysofar)-parseInt($pability)) > 0.01) {
                              lowLevelabilitysofar=  $pability;
 
                          }*/
 
 
                     }
+                }
+            });
+            //end of ability calculaions
+
+            //fetch next questions
+            $.ajax({
+                type: 'POST',
+                url: '/fetchNextQuestion',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                },
+                data: {
+                    examCode:$examCode,
+                    subjectId:$subjectId
+                },
+                success: function (data) {
+                    console.log(data);
+
+                    //update hidden value for the question fetched
+                    console.log("next_question"+data[0].id);
+                    var questionNo = $('input[name="current_qusetion_no"]:hidden').val();
+                    console.log("quest"+questionNo);
+                    $('input[name="marks"]:hidden').val(data[0].marks);
+                    $('input[name="negmarks"]:hidden').val(data[0].negative_marks);
+                    $('input[name="correctoption"]:hidden').val(data[0].correct_option);
+                    $('input[name="qdifficulty"]:hidden').val(data[0].qdifficulty);
+                    $('input[name="qid"]:hidden').val(data[0].id);
+
+
+                    //increase the current question count by 1
+                    $('#quest').text(++questionNo + '.' +' '+ data[0].question);
+                    //update the question count
+                    $('input[name="current_qusetion_no"]:hidden').val(questionNo);
+
+                    var html1 =
+                        '<p id ="opt1" class="col-sm-12" >' +
+                        '<input type="radio" name="option' + data[0].id + '" id="optionA' + data[0].id + '" value="A" >' +
+                        '<label for="optionA' + data[0].id + '">' + data[0].option_A + '</label>' +
+                        '</p>';
+
+
+                    var html2 = '<p id ="opt2" class="col-sm-12" >' +
+                        '<input type="radio" name="option' + data[0].id + '" id="optionB' + data[0].id + '" value="B" >' +
+                        '<label for="optionB' + data[0].id + '">' + data[0].option_B + '</label>' +
+                        '</p>';
+
+                    var html3 = '<p id ="opt3" class="col-sm-12" >' +
+                        '<input type="radio" name="option' + data[0].id + '" id="optionC' + data[0].id + '" value="C" >' +
+                        '<label for="optionC' + data[0].id + '">' + data[0].option_C + '</label>' +
+                        '</p>';
+                    var html4 = '<p id ="opt4" class="col-sm-12" >' +
+                        '<input type="radio" name="option' + data[0].id + '" id="optionD' + data[0].id + '" value="D" >' +
+                        '<label for="optionD' + data[0].id + '">' + data[0].option_D + '</label>' +
+                        '</p>';
+                    // }
+
+                    $('#opt1').replaceWith(html1);
+                    $('#opt2').replaceWith(html2);
+                    $('#opt3').replaceWith(html3);
+                    $('#opt4').replaceWith(html4);
+                }
+
+            });
+            //end of fetch next question ajax
+
+
+
+
+            //ajax to check for correct answer to update the correct ability for persons
 
                     $.ajax({
                         type: 'POST',
@@ -651,74 +726,8 @@
                             console.log("givenmarks" + data[0][0].givenmarks);
                             if (data[0][0].givenmarks > 0) {
                                 // ability if next answer right
-                                let ABILITYRIGHT = lowLevelabilitysofar + (1 / PVAR);
-                                abilityforCorrectAnswer = ABILITYRIGHT;
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/updatestudentability',
-                                    beforeSend: function (xhr) {
-                                        xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
-                                    },
-                                    data: {
-                                        pability: lowLevelabilitysofar,
-                                        abilityright: abilityforCorrectAnswer,
-                                        se: SE,
-                                        subjectId: $subjectId,
-                                        examCode: $examCode
-                                    },
-                                    success: function (data) {
-                                        console.log(data);
-
-                                        $('input[name="marks"]:hidden').val(data.marks);
-
-                                        $('input[name="negmarks"]:hidden').val(data.negative_marks);
-                                        $('input[name="correctoption"]:hidden').val(data.correct_option);
-                                        $('input[name="qdifficulty"]:hidden').val(data.qdifficulty);
 
 
-                                        $('input[name="qid"]:hidden').val(data.id);
-
-
-                                        let count = 1;
-                                        $('#quest').text(++count + '.' + data.question);
-
-                                        var html1 =
-                                            '<p id ="opt1" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionA' + data.id + '" value="A" >' +
-                                            '<label for="optionA' + data.id + '">' + data.option_A + '</label>' +
-                                            '</p>';
-
-
-                                        var html2 = '<p id ="opt2" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionB' + data.id + '" value="B" >' +
-                                            '<label for="optionB' + data.id + '">' + data.option_B + '</label>' +
-                                            '</p>';
-
-                                        var html3 = '<p id ="opt3" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionC' + data.id + '" value="C" >' +
-                                            '<label for="optionC' + data.id + '">' + data.option_C + '</label>' +
-                                            '</p>';
-                                        var html4 = '<p id ="opt4" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionD' + data.id + '" value="D" >' +
-                                            '<label for="optionD' + data.id + '">' + data.option_D + '</label>' +
-                                            '</p>';
-                                        // }
-
-
-                                        $('#opt1').replaceWith(html1);
-                                        $('#opt2').replaceWith(html2);
-                                        $('#opt3').replaceWith(html3);
-                                        $('#opt4').replaceWith(html4);
-
-
-                                    }
-                                });
-
-
-                            }
-                            else {
-                                console.log("wrong answer quest"+data[0]);
                                 $.ajax({
                                     type: 'POST',
                                     url: '/updatestudentability',
@@ -727,76 +736,45 @@
                                     },
                                     data: {
                                         pability: $pability,
-                                        abilityright: '{{$student->abilityright}}',
+                                        abilityright: ABILITYRIGHT,
                                         se: SE,
                                         subjectId: $subjectId,
                                         examCode: $examCode
                                     },
                                     success: function (data) {
                                         console.log(data);
-
-                                        $('input[name="marks"]:hidden').val(data.marks);
-
-                                        $('input[name="negmarks"]:hidden').val(data.negative_marks);
-                                        $('input[name="correctoption"]:hidden').val(data.correct_option);
-
-                                        $('input[name="qid"]:hidden').val(data.id);
+                                    }
+                                });
 
 
-                                        let count = 1;
-                                        $('#quest').text(++count + '.' + data.question);
-
-                                        var html1 =
-                                            '<p id ="opt1" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionA' + data.id + '" value="A" >' +
-                                            '<label for="optionA' + data.id + '">' + data.option_A + '</label>' +
-                                            '</p>';
-
-
-                                        var html2 = '<p id ="opt2" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionB' + data.id + '" value="B" >' +
-                                            '<label for="optionB' + data.id + '">' + data.option_B + '</label>' +
-                                            '</p>';
-
-                                        var html3 = '<p id ="opt3" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionC' + data.id + '" value="C" >' +
-                                            '<label for="optionC' + data.id + '">' + data.option_C + '</label>' +
-                                            '</p>';
-                                        var html4 = '<p id ="opt4" class="col-sm-12" >' +
-                                            '<input type="radio" name="option' + data.id + '" id="optionD' + data.id + '" value="D" >' +
-                                            '<label for="optionD' + data.id + '">' + data.option_D + '</label>' +
-                                            '</p>';
-                                        // }
-
-
-                                        $('#opt1').replaceWith(html1);
-                                        $('#opt2').replaceWith(html2);
-                                        $('#opt3').replaceWith(html3);
-                                        $('#opt4').replaceWith(html4);
-
-
+                            }
+                            else if(data[0][0].givenmarks <= 0){
+                                console.log("wrong givenmarks"+data[0][0].givenmarks);
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/updatestudentability',
+                                    beforeSend: function (xhr) {
+                                        xhr.setRequestHeader('X-CSRF-TOKEN', $("#token").attr('content'));
+                                    },
+                                    data: {
+                                        pability: ABILITY,
+                                        abilityright: $abilityRight,
+                                        se: SE,
+                                        subjectId: $subjectId,
+                                        examCode: $examCode
+                                    },
+                                    success: function (data) {
+console.log(data);
                                     }
                                 });
                             }
                         }
                     });
+            //end of persons ability update based on correct or incorrect answers
 
 
-                    // console.log("current ability"+ABILITY);
 
 
-                }
-            });
-
-
-            //alert("correctiopt"+correctoption);
-
-            if ($('input[name=option' + questionId + ']:checked').val() == correctoption) {
-                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), marks);
-            } else {
-                AddUserResponse(questionId, $('input[name=option' + questionId + ']:checked').val(), negmarks);
-
-            }
 
         }
 
@@ -913,7 +891,7 @@
         }
 
         // Add AddUserResponse
-        function AddUserResponse(ques_id, selected_option, givenmarks) {
+        function AddUserResponse(ques_id, selected_option, givenmarks,subjectId) {
             //    $("#add").addClass('hidden');
             //    $("#spin").removeClass('hidden');
             let data = new FormData();
@@ -924,6 +902,7 @@
             data.append('selected_option', selected_option);
             data.append('givenmarks', givenmarks);
             data.append('examcode', '{{$examId}}');
+            data.append('subject_id', subjectId);
             active_process = +active_process + +1;
             $("#active_process").removeClass('hidden');
             $.ajax({

@@ -37,7 +37,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
     }
 
     /**
@@ -193,8 +193,9 @@ class HomeController extends Controller
         ];
 
         $result = result::updateOrCreate(
-            ['ques_id' => $req->ques_id, 'student_id' => Auth::user()->student_id],
-            ['selected_option' => $req->selected_option, 'givenmarks' => $req->givenmarks]
+            ['ques_id' => $req->ques_id, 'student_id' => Auth::user()->student_id,
+                'selected_option' => $req->selected_option, 'givenmarks' => $req->givenmarks,
+                'subject_id' => $req->subject_id]
         );
 
         // $exammark =Addquestion::where('$result',$result->ques_id)->get()
@@ -273,7 +274,7 @@ class HomeController extends Controller
         $random = (float)rand() / (float)getrandmax();
 
         $ABILITY = $qmean - (0.5 + 0.5 * $random);
-       // dd($ABILITY);
+        // dd($ABILITY);
 
         $ABILITYRIGHT = $ABILITY + 1;
         $SE = $ACCURACY;
@@ -289,33 +290,52 @@ class HomeController extends Controller
         }
 
 
-        $subjectquestion = DB::table('exam_subject')
-            ->join('exam_question', 'exam_question.subject_code', '=', 'exam_subject.subject_id')
+        $subquest = DB::table('exam_question')
+            ->join('exam_subject', 'exam_subject.subject_id', '=', 'exam_question.subject_code')
+            ->leftJoin('result', 'result.ques_id', '=', 'exam_question.id')
             ->select('exam_subject.*', 'exam_question.*')
+            ->whereNull('result.ques_id')
             ->where(['exam_question.examcode' => $examcode, 'exam_subject.subject_id' => $id])
-            ->get();
-       /* $halfability = (($student->pability + $student->abilityright) * 0.5);
-        $subjectquestion = null;*/
-       /* foreach($subquest as $value) {
-            $qhold = ABS($value->qdifficulty * 0.1 - $halfability);
-            // dd("qdiff".$value->qdifficulty * 0.1 .">=".$student->pability."qdiff".$value->qdifficulty * 0.1."<=".$student->abilityright);
-            if (($value->qdifficulty * 0.1 >= $student->pability) && ($value->qdifficulty * 0.1 <= $student->abilityright)) {
-                $subjectquestion = $value;
+            ->get()->toArray();
 
-            } else if (ABS($value->qdifficulty * 0.1 - $halfability) < $qhold) {
+        if ($subquest == []) {
 
-                $subjectquestion = $value;
-            } else {
-                $subjectquestion = $value;
+            DB::table('result')
+                ->leftjoin('ref_result', 'ref_result.subject_id', '=', 'result.subject_id')
+                ->select('result.*')
+                ->where(['result.student_id' => Auth::user()->student_id])
+                ->delete();
+
+            return redirect()->back();
+
+
+        } else {
+            $subjectquestion = null;
+            shuffle($subquest);
+            for ($i = 0; $i < count($subquest); $i++) {
+                $halfability = (($student->pability + $student->abilityright) * 0.1);
+                $qhold = ABS($subquest[$i]->qdifficulty * 0.1 - $halfability);
+
+                //dd("qdiff".$subquest[$i]->qdifficulty  .">=".$student->pability."qdiff".$subquest[$i]->qdifficulty * 0.1."<=".$student->abilityright);
+
+                if (($subquest[$i]->qdifficulty * 0.1 >= $student->pability) && ($subquest[$i]->qdifficulty * 0.1 <= $student->abilityright)) {
+                    $subjectquestion = $subquest[$i];
+                    // dd($subjectquestion);
+
+                } else if (ABS($subquest[$i]->qdifficulty * 0.1 - $halfability) < $qhold) {
+
+                    $subjectquestion = $subquest[$i];
+                } else {
+                    $subjectquestion = $subquest[$i];
+                }
             }
-        }*/
 
 
-     // dd($subjectquestion);
+            // dd($subjectquestion);
 
 
-
-        return view('Startexam', compact('id', 'examcode', 'subjectquestion', 'time', 'subjectId', 'examId', 'userId', 'first_time', 'student', 'halfability'));
+            return view('Startexam', compact('id', 'examcode', 'subjectquestion', 'time', 'subjectId', 'examId', 'userId', 'first_time', 'student', 'halfability'));
+        }
     }
 
 
@@ -497,38 +517,8 @@ class HomeController extends Controller
 
         }
 
-        $student = StudentAbility::where(['student_id' => Auth::user()->student_id])->first();
-        $subquest = DB::table('exam_subject')
-            ->join('exam_question', 'exam_question.subject_code', '=', 'exam_subject.subject_id')
-            ->select('exam_subject.*', 'exam_question.*')
-            ->where(['exam_question.examcode' => $req->examCode, 'exam_subject.subject_id' => $req->subjectId])
-            ->get()->toArray();
 
-
-
-        $subjectquestion = null;
-        shuffle($subquest);
-        for($i = 0; $i < count($subquest); $i++){
-            $halfability = (($student->pability + $student->abilityright) * 0.5);
-            $qhold = ABS($subquest[$i]->qdifficulty * 0.1 - $halfability);
-
-            //dd("qdiff".$subquest[$i]->qdifficulty  .">=".$student->pability."qdiff".$subquest[$i]->qdifficulty * 0.1."<=".$student->abilityright);
-
-            if (($subquest[$i]->qdifficulty  >= $student->pability) && ($subquest[$i]->qdifficulty * 0.1 <= $student->abilityright)) {
-                $subjectquestion = $subquest[$i];
-               // dd($subjectquestion);
-
-            } else if (ABS($subquest[$i]->qdifficulty * 0.1 - $halfability) < $qhold) {
-
-                $subjectquestion = $subquest[$i];
-            } else {
-                $subjectquestion = $subquest[$i];
-            }
-        }
-
-
-        return response()->json($subjectquestion);
-
+        return response()->json($ability);
 
 
     }
@@ -538,18 +528,10 @@ class HomeController extends Controller
     {
 
         $qasked = DB::table('result')
-
-            ->join('exam_question','exam_question.id','=','result.ques_id')
-            ->select('result.*','exam_question.qdifficulty')
+            ->join('exam_question', 'exam_question.id', '=', 'result.ques_id')
+            ->select('result.*', 'exam_question.qdifficulty')
             ->where(['result.student_id' => Auth::user()->student_id])
             ->get();
-
-
-
-
-
-
-
 
 
         return response()->json([$qasked]);
@@ -558,14 +540,63 @@ class HomeController extends Controller
     public function CheckCorrectAnswer(Request $request)
     {
 
+
         $iscorrectAnswer = DB::table('result')
             ->select('result.*')
             ->where(['result.student_id' => Auth::user()->student_id, 'result.ques_id' => $request->ques_id])
             ->get();
 
+        // dd($iscorrectAnswer);
+
         return response()->json([$iscorrectAnswer]);
 
 
+    }
+
+    public function fetchNextQuestion(Request $req)
+    {
+
+        $student = StudentAbility::where(['student_id' => Auth::user()->student_id])->first();
+        $subquest = DB::table('exam_question')
+            ->join('exam_subject', 'exam_subject.subject_id', '=', 'exam_question.subject_code')
+            ->leftJoin('result', 'result.ques_id', '=', 'exam_question.id')
+            ->select('exam_subject.*', 'exam_question.*')
+            ->whereNull('result.ques_id')
+            ->where(['exam_question.examcode' => $req->examCode, 'exam_subject.subject_id' => $req->subjectId])
+            ->get()->toArray();
+
+
+        $subjectquestion = null;
+        shuffle($subquest);
+        for ($i = 0; $i < count($subquest); $i++) {
+            $halfability = (($student->pability + $student->abilityright) * 0.1);
+            $qhold = ABS($subquest[$i]->qdifficulty * 0.1 - $halfability);
+
+            //dd("qdiff".$subquest[$i]->qdifficulty  .">=".$student->pability."qdiff".$subquest[$i]->qdifficulty * 0.1."<=".$student->abilityright);
+
+            if (($subquest[$i]->qdifficulty * 0.1 >= $student->pability) && ($subquest[$i]->qdifficulty * 0.1 <= $student->abilityright)) {
+                $subjectquestion = $subquest[$i];
+                // dd($subjectquestion);
+
+            } else if (ABS($subquest[$i]->qdifficulty * 0.1 - $halfability) < $qhold) {
+
+                $subjectquestion = $subquest[$i];
+            } else {
+                $subjectquestion = $subquest[$i];
+            }
+        }
+
+        return response()->json([$subjectquestion]);
+    }
+
+
+    public function StudentInitialAbility(Request $req)
+    {
+
+        $studentAbility = StudentAbility::updateOrCreate(
+            ['student_id' => $req->student_id, 'subject_id'=>"none",'pability' => $req->pability, 'abilityright' => $req->abilityright, 'se' => $req->se]
+        );
+        return response()->json($studentAbility);
     }
 
 

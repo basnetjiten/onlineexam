@@ -56,6 +56,7 @@ Route::delete('test',function(){
     Route::post('/countquestionasked', 'HomeController@CountQuestionAsked');
     Route::post('/checkforcorrectanswer', 'HomeController@CheckCorrectAnswer');
     Route::post('/updatestudentability', 'HomeController@UpdateStudentAbility');
+    Route::post('/fetchNextQuestion', 'HomeController@fetchNextQuestion');
     Route::post('/getdetailresult', 'HomeController@Get_Detail_Result');
     Route::post('/getsingleresult', 'HomeController@Get_Single_Result');
     Route::post('/updateexamlist', 'HomeController@Updateexamlist');
@@ -64,6 +65,7 @@ Route::delete('test',function(){
     Route::post('/ajaxupdateexamcount', 'HomeController@updateExamCount');
     Route::post('/nextlevelsubject', 'HomeController@nextLevelSubject');
     Route::post('/adduserreponse', 'HomeController@Adduserresponse');
+    Route::post('/studentinitialability', 'HomeController@StudentInitialAbility');
     Route::post('/updatesubjectlevel', 'HomeController@UpdateSubjectLevel');
     Route::post('/refresult', 'HomeController@AttemptNewExam');
     Route::get('/exam/start/{subject_id}/{title}/{tname}/{time}/{first_time}/{examcode}', 'HomeController@startexam');
